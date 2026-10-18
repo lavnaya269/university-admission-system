@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Allocation Result | University Admission System</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Segoe UI", Arial, sans-serif;
+        }
+
+        body {
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            background: linear-gradient(135deg, #eef2ff, #f8fafc);
+            color: #1e293b;
+        }
+
+        .card {
+            width: 100%;
+            max-width: 600px;
+            padding: 38px;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 15px 45px rgba(31, 41, 55, 0.12);
+        }
+
+        .icon {
+            width: 75px;
+            height: 75px;
+            margin: 0 auto 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            background: #e0e7ff;
+            color: #4338ca;
+            font-size: 38px;
+        }
+
+        h1 {
+            text-align: center;
+            color: #312e81;
+            margin-bottom: 12px;
+            font-size: 27px;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #64748b;
+            line-height: 1.6;
+            margin-bottom: 25px;
+        }
+
+        .details {
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 14px;
+            padding: 20px;
+        }
+
+        .detail-row {
+            display: flex;
+            justify-content: space-between;
+            gap: 15px;
+            padding: 13px 0;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .detail-row:last-child {
+            border-bottom: none;
+        }
+
+        .label {
+            color: #64748b;
+            font-weight: 500;
+        }
+
+        .value {
+            color: #1e293b;
+            font-weight: 600;
+            text-align: right;
+            overflow-wrap: anywhere;
+        }
+
+        .status {
+            display: inline-block;
+            padding: 6px 12px;
+            border-radius: 20px;
+            background: #fef3c7;
+            color: #92400e;
+            font-size: 13px;
+        }
+
+        .allocated {
+            background: #dcfce7;
+            color: #166534;
+        }
+
+        .rejected {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+
+        .message {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 10px;
+            background: #eef2ff;
+            color: #3730a3;
+            line-height: 1.6;
+            text-align: center;
+        }
+
+        .buttons {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 25px;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 12px 18px;
+            background: #4f46e5;
+            color: white;
+            border-radius: 9px;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .btn:hover {
+            background: #3730a3;
+        }
+
+        .secondary {
+            background: #475569;
+        }
+
+        .secondary:hover {
+            background: #334155;
+        }
+
+        @media (max-width: 480px) {
+            .card {
+                padding: 23px 18px;
+            }
+
+            h1 {
+                font-size: 23px;
+            }
+
+            .detail-row {
+                flex-direction: column;
+                gap: 6px;
+            }
+
+            .value {
+                text-align: left;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <main class="card">
+
+        <div class="icon">🎓</div>
+
+        <h1>Admission Allocation Result</h1>
+
+        <p class="subtitle">
+            Here are the details and current seat allocation status
+            of your university application.
+        </p>
+
+        <section class="details">
+
+            <div class="detail-row">
+                <span class="label">Application ID</span>
+                <span class="value" th:text="${student.id}">1</span>
+            </div>
+
+            <div class="detail-row">
+                <span class="label">Student Name</span>
+                <span class="value" th:text="${student.fullName}">Student Name</span>
+            </div>
+
+            <div class="detail-row">
+                <span class="label">Email</span>
+                <span class="value" th:text="${student.email}">student@example.com</span>
+            </div>
+
+            <div class="detail-row">
+                <span class="label">Applied Course</span>
+                <span class="value" th:text="${student.course}">Course</span>
+            </div>
+
+            <div class="detail-row">
+                <span class="label">Marks</span>
+                <span class="value" th:text="${student.marks}">80</span>
+            </div>
+
+            <div class="detail-row">
+                <span class="label">Allocated Course</span>
+                <span class="value"
+                      th:text="${student.allocatedCourse != null ? student.allocatedCourse : 'Not allocated yet'}">
+                    Not allocated yet
+                </span>
+            </div>
+
+            <div class="detail-row">
+                <span class="label">Allocation Status</span>
+
+                <span class="value">
+                    <span class="status"
+                          th:classappend="${student.allocationStatus == 'ALLOCATED' ? ' allocated' : (student.allocationStatus == 'REJECTED' ? ' rejected' : '')}"
+                          th:text="${student.allocationStatus}">
+                        PENDING
+                    </span>
+                </span>
+            </div>
+
+        </section>
+
+        <div class="message"
+             th:if="${student.allocationStatus == 'PENDING'}">
+            ⏳ Your application is pending seat allocation.
+            Please check again later.
+        </div>
+
+        <div class="message"
+             th:if="${student.allocationStatus == 'ALLOCATED'}">
+            ✅ Congratulations! A seat has been allocated to you.
+        </div>
+
+        <div class="message"
+             th:if="${student.allocationStatus == 'REJECTED'}">
+            Unfortunately, a seat has not been allocated to your application.
+            Please contact the university administration for assistance.
+        </div>
+
+        <div class="buttons">
+            <a class="btn" th:href="@{/allocation}">Check Another Application</a>
+            <a class="btn secondary" th:href="@{/}">Back to Home</a>
+        </div>
+
+    </main>
+
+</body>
+</html>

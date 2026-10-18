@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Application Submitted</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: "Segoe UI", Arial, sans-serif;
+        }
+
+        body {
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            background: linear-gradient(135deg, #eef2ff, #f8fafc);
+            color: #1e293b;
+        }
+
+        .card {
+            width: 100%;
+            max-width: 560px;
+            padding: 40px 30px;
+            background: white;
+            border-radius: 20px;
+            text-align: center;
+            box-shadow: 0 15px 45px rgba(31, 41, 55, 0.12);
+        }
+
+        .icon {
+            width: 85px;
+            height: 85px;
+            margin: 0 auto 22px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #dcfce7;
+            color: #15803d;
+            border-radius: 50%;
+            font-size: 45px;
+        }
+
+        h1 {
+            color: #312e81;
+            margin-bottom: 15px;
+        }
+
+        p {
+            color: #64748b;
+            line-height: 1.7;
+            margin-bottom: 14px;
+        }
+
+        .details {
+            background: #f8fafc;
+            padding: 18px;
+            border-radius: 12px;
+            text-align: left;
+            margin: 24px 0;
+        }
+
+        .details p {
+            margin: 8px 0;
+            overflow-wrap: anywhere;
+        }
+
+        .status {
+            display: inline-block;
+            padding: 6px 12px;
+            background: #fef3c7;
+            color: #92400e;
+            border-radius: 20px;
+            font-weight: 600;
+        }
+
+        .btn {
+            display: inline-block;
+            margin: 7px 4px;
+            padding: 12px 18px;
+            border-radius: 9px;
+            background: #4f46e5;
+            color: white;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .btn:hover {
+            background: #3730a3;
+        }
+
+        .secondary {
+            background: #475569;
+        }
+
+        .secondary:hover {
+            background: #334155;
+        }
+    </style>
+</head>
+
+<body>
+    <main class="card">
+        <div class="icon">✓</div>
+
+        <h1>Application Submitted!</h1>
+
+        <p>
+            Congratulations! Your university admission application
+            has been submitted successfully.
+        </p>
+
+        <div class="details">
+            <p>
+                <strong>Application ID:</strong>
+                <span th:text="${student.id}">1</span>
+            </p>
+
+            <p>
+                <strong>Student Name:</strong>
+                <span th:text="${student.fullName}">Student Name</span>
+            </p>
+
+            <p>
+                <strong>Email:</strong>
+                <span th:text="${student.email}">student@example.com</span>
+            </p>
+
+            <p>
+                <strong>Applied Course:</strong>
+                <span th:text="${student.course}">Course</span>
+            </p>
+
+            <p>
+                <strong>Application Status:</strong>
+                <span class="status"
+                      th:text="${student.allocationStatus}">PENDING</span>
+            </p>
+        </div>
+
+        <p>
+            Your application is pending seat allocation.
+            Please check your status later.
+        </p>
+
+        <a class="btn" th:href="@{/allocation}">Check Allocation</a>
+        <a class="btn secondary" th:href="@{/}">Back to Home</a>
+    </main>
+</body>
+</html>

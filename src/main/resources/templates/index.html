@@ -1,0 +1,825 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>University Admission Portal</title>
+    <meta name="description" content="University admission and automated seat allocation portal for students and administrators.">
+
+
+    <style>
+        :root {
+            --navy: #111a38;
+            --purple: #5146d8;
+            --purple-light: #756cf0;
+            --gold: #ffc857;
+            --text: #202945;
+            --muted: #68738a;
+            --background: #f5f7fc;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            scroll-padding-top: 85px;
+        }
+
+        body {
+            font-family: "Segoe UI", Arial, sans-serif;
+            background: var(--background);
+            color: var(--text);
+            line-height: 1.6;
+        }
+
+        a {
+            text-decoration: none;
+        }
+
+        .navbar {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            min-height: 76px;
+            padding: 15px 7%;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+            flex-wrap: wrap;
+            background: var(--navy);
+            box-shadow: 0 5px 25px #111a3820;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            color: white;
+        }
+
+        .brand-icon {
+            width: 45px;
+            height: 45px;
+            display: grid;
+            place-items: center;
+            border-radius: 13px;
+            background: #ffffff18;
+            font-size: 25px;
+        }
+
+        .brand h2 {
+            font-size: 19px;
+            line-height: 1.3;
+            letter-spacing: .2px;
+        }
+
+        .brand small {
+            display: block;
+            margin-top: 3px;
+            color: #b9c3e7;
+            font-size: 11px;
+            font-weight: 500;
+            letter-spacing: 1.4px;
+            text-transform: uppercase;
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 7px;
+        }
+
+        .nav-links a {
+            padding: 10px 14px;
+            border-radius: 9px;
+            color: #e5e9fa;
+            font-size: 14px;
+            font-weight: 500;
+            transition: .2s;
+        }
+
+        .nav-links a:hover {
+            color: white;
+            background: #ffffff16;
+        }
+
+        .nav-links .nav-apply {
+            margin-left: 5px;
+            background: var(--gold);
+            color: #1d2540;
+            font-weight: 700;
+        }
+
+        .nav-links .nav-apply:hover {
+            background: white;
+            color: var(--navy);
+        }
+
+        .hero {
+            position: relative;
+            isolation: isolate;
+            overflow: hidden;
+            min-height: 510px;
+            padding: 85px 7%;
+            display: flex;
+            align-items: center;
+            background:
+                radial-gradient(ellipse at 85% 25%, #8c83ff50, transparent 34%),
+                radial-gradient(ellipse at 15% 100%, #2d8bc540, transparent 38%),
+                linear-gradient(125deg, #111a38 0%, #25256c 52%, #5146d8 100%);
+            color: white;
+        }
+
+        .hero::after {
+            content: "";
+            position: absolute;
+            z-index: -1;
+            right: -100px;
+            bottom: -220px;
+            width: 520px;
+            height: 520px;
+            border: 1px solid #ffffff22;
+            border-radius: 50%;
+            box-shadow:
+                0 0 0 45px #ffffff08,
+                0 0 0 90px #ffffff06;
+        }
+
+        .hero-content {
+            width: 100%;
+            max-width: 850px;
+        }
+
+        .eyebrow {
+            display: inline-flex;
+            align-items: center;
+            gap: 9px;
+            margin-bottom: 24px;
+            padding: 8px 14px;
+            border: 1px solid #ffffff32;
+            border-radius: 30px;
+            background: #ffffff0d;
+            color: #e4e7ff;
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+        }
+
+        .eyebrow span {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--gold);
+        }
+
+        .hero h1 {
+            max-width: 780px;
+            margin-bottom: 15px;
+            font-size: clamp(37px, 5.3vw, 66px);
+            font-weight: 750;
+            line-height: 1.12;
+            letter-spacing: -1.8px;
+        }
+
+        .hero h1 span {
+            color: var(--gold);
+        }
+
+        .hero h2 {
+            margin-bottom: 17px;
+            color: #d9ddff;
+            font-size: clamp(18px, 2.4vw, 25px);
+            font-weight: 500;
+        }
+
+        .hero p {
+            max-width: 630px;
+            margin-bottom: 30px;
+            color: #d0d7f3;
+            font-size: 16px;
+            line-height: 1.9;
+        }
+
+        .hero-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 13px;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 9px;
+            min-height: 48px;
+            padding: 13px 21px;
+            border: 1px solid transparent;
+            border-radius: 10px;
+            font-size: 14px;
+            font-weight: 700;
+            transition: transform .2s, background .2s;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+        }
+
+        .btn-gold {
+            background: var(--gold);
+            color: #1d2540;
+            box-shadow: 0 7px 22px #ffc85720;
+        }
+
+        .btn-gold:hover {
+            background: white;
+            color: var(--navy);
+        }
+
+        .btn-outline {
+            border-color: #ffffff55;
+            background: #ffffff0b;
+            color: white;
+        }
+
+        .btn-outline:hover {
+            background: #ffffff18;
+            color: white;
+        }
+
+        .highlights {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            max-width: 680px;
+            margin-top: 42px;
+            padding-top: 25px;
+            border-top: 1px solid #ffffff30;
+        }
+
+        .highlight {
+            padding-right: 16px;
+        }
+
+        .highlight strong {
+            display: block;
+            margin-bottom: 4px;
+            color: white;
+            font-size: 15px;
+        }
+
+        .highlight span {
+            color: #c4ccee;
+            font-size: 12px;
+        }
+
+        .section {
+            padding: 76px 7%;
+        }
+
+        .section-heading {
+            max-width: 700px;
+            margin: 0 auto 42px;
+            text-align: center;
+        }
+
+        .section-label {
+            display: inline-block;
+            margin-bottom: 12px;
+            color: var(--purple);
+            font-size: 12px;
+            font-weight: 800;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
+        .section-heading h2 {
+            margin-bottom: 13px;
+            color: var(--navy);
+            font-size: clamp(27px, 3.5vw, 38px);
+            line-height: 1.25;
+        }
+
+        .section-heading p {
+            color: var(--muted);
+            font-size: 15px;
+        }
+
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 22px;
+            max-width: 1150px;
+            margin: 0 auto;
+        }
+
+        .service-card {
+            position: relative;
+            overflow: hidden;
+            padding: 30px 26px;
+            border: 1px solid #e8ebf4;
+            border-radius: 18px;
+            background: white;
+            box-shadow: 0 7px 25px #1e293b08;
+            transition: transform .25s, box-shadow .25s;
+        }
+
+        .service-card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 18px 42px #25256c15;
+        }
+
+        .service-icon {
+            display: grid;
+            place-items: center;
+            width: 58px;
+            height: 58px;
+            margin-bottom: 23px;
+            border-radius: 16px;
+            background: #eeedff;
+            font-size: 27px;
+        }
+
+        .service-card:nth-child(2) .service-icon {
+            background: #e2f6f2;
+        }
+
+        .service-card:nth-child(3) .service-icon {
+            background: #fff1d8;
+        }
+
+        .service-card h3 {
+            margin-bottom: 12px;
+            color: var(--navy);
+            font-size: 20px;
+        }
+
+        .service-card p {
+            min-height: 75px;
+            color: var(--muted);
+            font-size: 14px;
+            line-height: 1.8;
+        }
+
+        .service-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 21px;
+            color: var(--purple);
+            font-size: 14px;
+            font-weight: 750;
+        }
+
+        .service-link:hover {
+            color: var(--navy);
+        }
+
+        .about {
+            padding: 0 7% 76px;
+        }
+
+        .about-box {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 45px;
+            align-items: center;
+            max-width: 1150px;
+            margin: 0 auto;
+            padding: 43px;
+            border: 1px solid #e8ebf4;
+            border-radius: 22px;
+            background: white;
+            box-shadow: 0 10px 35px #1e293b08;
+        }
+
+        .about-box h2 {
+            margin-bottom: 16px;
+            color: var(--navy);
+            font-size: 30px;
+        }
+
+        .about-box p {
+            color: var(--muted);
+            font-size: 15px;
+            line-height: 1.9;
+        }
+
+        .about-points {
+            display: grid;
+            gap: 15px;
+        }
+
+        .about-point {
+            display: flex;
+            align-items: flex-start;
+            gap: 13px;
+            padding: 16px;
+            border-radius: 12px;
+            background: #f6f7ff;
+        }
+
+        .check {
+            display: grid;
+            flex-shrink: 0;
+            place-items: center;
+            width: 29px;
+            height: 29px;
+            border-radius: 9px;
+            background: #e0e7ff;
+            color: var(--purple);
+            font-weight: 800;
+        }
+
+        .about-point strong {
+            display: block;
+            margin-bottom: 3px;
+            color: var(--navy);
+            font-size: 14px;
+        }
+
+        .about-point small {
+            color: var(--muted);
+            font-size: 13px;
+            line-height: 1.6;
+        }
+
+        .cta {
+            margin: 0 7% 75px;
+            padding: 38px 30px;
+            border-radius: 20px;
+            background: linear-gradient(120deg, #27245f, #5146d8);
+            color: white;
+            text-align: center;
+        }
+
+        .cta h2 {
+            margin-bottom: 10px;
+            font-size: clamp(24px, 3vw, 32px);
+        }
+
+        .cta p {
+            margin-bottom: 22px;
+            color: #e0e7ff;
+            font-size: 14px;
+        }
+
+        .footer {
+            padding: 34px 7% 20px;
+            background: var(--navy);
+            color: #dce2f9;
+        }
+
+        .footer-main {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 25px;
+            padding-bottom: 26px;
+        }
+
+        .footer h3 {
+            margin-bottom: 10px;
+            color: white;
+            font-size: 18px;
+        }
+
+        .footer p {
+            max-width: 430px;
+            color: #b7c1e2;
+            font-size: 13px;
+            line-height: 1.8;
+        }
+
+        .footer-links {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 17px;
+        }
+
+        .footer-links a {
+            color: #dce2f9;
+            font-size: 13px;
+        }
+
+        .footer-links a:hover {
+            color: var(--gold);
+        }
+
+        .copyright {
+            padding-top: 18px;
+            border-top: 1px solid #ffffff20;
+            color: #aeb9da;
+            text-align: center;
+            font-size: 12px;
+        }
+
+        @media (max-width: 900px) {
+            .services-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .about-box {
+                grid-template-columns: 1fr;
+                gap: 25px;
+            }
+        }
+
+        @media (max-width: 620px) {
+            .navbar {
+                justify-content: center;
+                padding: 15px 5%;
+            }
+
+            .brand {
+                width: 100%;
+                justify-content: center;
+            }
+
+            .nav-links {
+                justify-content: center;
+                gap: 2px;
+            }
+
+            .nav-links a {
+                padding: 9px;
+                font-size: 12px;
+            }
+
+            .nav-links .nav-apply {
+                margin-left: 0;
+            }
+
+            .hero {
+                min-height: auto;
+                padding: 60px 6%;
+            }
+
+            .hero h1 {
+                letter-spacing: -1px;
+            }
+
+            .hero p {
+                font-size: 14px;
+            }
+
+            .hero-buttons .btn {
+                width: 100%;
+            }
+
+            .highlights {
+                gap: 12px;
+            }
+
+            .highlight {
+                padding-right: 0;
+            }
+
+            .highlight strong {
+                font-size: 12px;
+            }
+
+            .highlight span {
+                font-size: 10px;
+            }
+
+            .section {
+                padding: 55px 6%;
+            }
+
+            .services-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .service-card p {
+                min-height: 0;
+            }
+
+            .about {
+                padding: 0 6% 55px;
+            }
+
+            .about-box {
+                padding: 25px 19px;
+            }
+
+            .cta {
+                margin: 0 6% 55px;
+                padding: 30px 18px;
+            }
+
+            .footer-main {
+                flex-direction: column;
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after {
+                scroll-behavior: auto !important;
+                transition: none !important;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <header class="navbar">
+        <a class="brand" href="/" aria-label="University Portal home">
+            <span class="brand-icon">🎓</span>
+            <span>
+                <h2>University Portal</h2>
+                <small>Admissions &amp; Allocation</small>
+            </span>
+        </a>
+
+        <nav class="nav-links" aria-label="Main navigation">
+            <a href="/">Home</a>
+            <a href="#services">Services</a>
+            <a href="#about">About</a>
+            <a href="/allocation">Check Status</a>
+            <a class="nav-apply" href="/admission">Apply Now ↗</a>
+        </nav>
+    </header>
+
+    <main>
+        <section class="hero">
+            <div class="hero-content">
+                <div class="eyebrow">
+                    <span></span>
+                    Your future starts here
+                </div>
+
+                <h1>Build Your Future Through <span>Education.</span></h1>
+
+                <h2>University Admission &amp; Automated Seat Allocation</h2>
+
+                <p>
+                    Begin your academic journey with a simple admission process.
+                    Submit your application, track your status, and view your
+                    seat allocation through one convenient university portal.
+                </p>
+
+                <div class="hero-buttons">
+                    <a class="btn btn-gold" href="/admission">
+                        Start Your Application <span aria-hidden="true">→</span>
+                    </a>
+
+                    <a class="btn btn-outline" href="/allocation">
+                        Check Allocation Status
+                    </a>
+                </div>
+
+                <div class="highlights">
+                    <div class="highlight">
+                        <strong>Easy Application</strong>
+                        <span>Simple student registration</span>
+                    </div>
+
+                    <div class="highlight">
+                        <strong>Clear Status</strong>
+                        <span>Track your application</span>
+                    </div>
+
+                    <div class="highlight">
+                        <strong>Seat Allocation</strong>
+                        <span>View allocation results</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="section" id="services">
+            <div class="section-heading">
+                <span class="section-label">Explore the portal</span>
+                <h2>Everything You Need in One Place</h2>
+                <p>
+                    Access admission services, track your application, or
+                    manage university applications from the relevant portal.
+                </p>
+            </div>
+
+            <div class="services-grid">
+                <article class="service-card">
+                    <div class="service-icon" aria-hidden="true">📝</div>
+                    <h3>Student Admission</h3>
+                    <p>
+                        Complete your application with your personal details,
+                        academic marks, and preferred course.
+                    </p>
+                    <a class="service-link" href="/admission">
+                        Apply for Admission <span aria-hidden="true">→</span>
+                    </a>
+                </article>
+
+                <article class="service-card">
+                    <div class="service-icon" aria-hidden="true">🎯</div>
+                    <h3>Seat Allocation</h3>
+                    <p>
+                        Check your application status and see your allocated
+                        course when the allocation process is complete.
+                    </p>
+                    <a class="service-link" href="/allocation">
+                        Check Your Status <span aria-hidden="true">→</span>
+                    </a>
+                </article>
+
+                <article class="service-card">
+                    <div class="service-icon" aria-hidden="true">🔐</div>
+                    <h3>Administrator Portal</h3>
+                    <p>
+                        Authorized administrators can review applications,
+                        manage records, and run seat allocation.
+                    </p>
+                    <a class="service-link" href="/admin">
+                        Administrator Login <span aria-hidden="true">→</span>
+                    </a>
+                </article>
+            </div>
+        </section>
+
+        <section class="about" id="about">
+            <div class="about-box">
+                <div>
+                    <span class="section-label">About our system</span>
+                    <h2>A Simpler Admission Experience</h2>
+                    <p>
+                        The University Admission &amp; Automated Seat Allocation
+                        System is designed to organize student applications
+                        and make admission-status checking more convenient.
+                        Students can submit their details and revisit the
+                        portal to check their allocation status.
+                    </p>
+                </div>
+
+                <div class="about-points">
+                    <div class="about-point">
+                        <span class="check" aria-hidden="true">✓</span>
+                        <div>
+                            <strong>Organized Applications</strong>
+                            <small>Keep submitted student information together in one system.</small>
+                        </div>
+                    </div>
+
+                    <div class="about-point">
+                        <span class="check" aria-hidden="true">✓</span>
+                        <div>
+                            <strong>Application Status</strong>
+                            <small>View the current status associated with your application.</small>
+                        </div>
+                    </div>
+
+                    <div class="about-point">
+                        <span class="check" aria-hidden="true">✓</span>
+                        <div>
+                            <strong>Administrator Controls</strong>
+                            <small>Provide an administration area for reviewing records and allocation.</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="cta">
+            <h2>Ready to Begin Your Academic Journey?</h2>
+            <p>Start your application or check the status of an existing one.</p>
+
+            <div class="hero-buttons" style="justify-content:center;">
+                <a class="btn btn-gold" href="/admission">Apply Now →</a>
+                <a class="btn btn-outline" href="/allocation">Check Status</a>
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <div class="footer-main">
+            <div>
+                <h3>🎓 University Portal</h3>
+                <p>
+                    University Admission &amp; Automated Seat Allocation System.
+                    Supporting an organized and accessible admission experience.
+                </p>
+            </div>
+
+            <nav class="footer-links" aria-label="Footer navigation">
+                <a href="/">Home</a>
+                <a href="/admission">Admission</a>
+                <a href="/allocation">Check Allocation</a>
+                <a href="/admin">Admin Login</a>
+            </nav>
+        </div>
+
+        <div class="copyright">
+            © 2026 University Admission System. All rights reserved.
+        </div>
+    </footer>
+
+</body>
+</html>

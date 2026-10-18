@@ -41,3 +41,4 @@ application-secret.properties
 # Build output
 target/
 src/main/java/com/university/resources/application.properties
+src/main/resources/application.properties

@@ -1,0 +1,90 @@
+
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Verify Email OTP</title>
+    <style>
+        * { box-sizing: border-box; }
+        body {
+            margin: 0;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            font-family: "Segoe UI", Arial, sans-serif;
+            background: linear-gradient(135deg, #111a38, #3730a3, #6366f1);
+        }
+        .card {
+            width: 100%;
+            max-width: 430px;
+            padding: 32px;
+            border-radius: 18px;
+            background: white;
+            box-shadow: 0 15px 45px #0003;
+        }
+        h1 { color: #3730a3; text-align: center; font-size: 26px; }
+        p { text-align: center; color: #475569; line-height: 1.6; }
+        label { display: block; margin: 22px 0 8px; font-weight: 600; }
+        input {
+            width: 100%;
+            padding: 13px;
+            border: 1px solid #cbd5e1;
+            border-radius: 9px;
+            font-size: 20px;
+            text-align: center;
+            letter-spacing: 6px;
+        }
+        button {
+            width: 100%;
+            margin-top: 20px;
+            padding: 14px;
+            border: none;
+            border-radius: 9px;
+            background: #3730a3;
+            color: white;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        .error { color: #dc2626; text-align: center; }
+        .success { color: #15803d; text-align: center; }
+        a { display: block; margin-top: 18px; text-align: center; color: #3730a3; }
+    </style>
+</head>
+<body>
+<div class="card">
+    <h1>📩 Verify Your Email</h1>
+    <p>Enter the six-digit OTP sent to:</p>
+    <p><strong th:text="${email}">student@example.com</strong></p>
+
+    <p class="error" th:if="${errorMessage}" th:text="${errorMessage}"></p>
+    <p class="success" th:if="${successMessage}" th:text="${successMessage}"></p>
+
+    <form th:action="@{/verify-otp}" method="post">
+        <input type="hidden" name="purpose" th:value="${purpose}">
+
+        <label for="otp">Six-digit OTP</label>
+        <input type="text"
+               id="otp"
+               name="otp"
+               inputmode="numeric"
+               pattern="[0-9]{6}"
+               maxlength="6"
+               autocomplete="one-time-code"
+               placeholder="000000"
+               required>
+
+        <button type="submit">Verify OTP</button>
+    </form>
+
+    <a th:if="${purpose == 'ADMISSION'}"
+       th:href="@{/admission}">Back to Admission Form</a>
+
+    <a th:if="${purpose == 'LOGIN'}"
+       th:href="@{/student/login}">Back to Student Login</a>
+</div>
+</body>
+</html>

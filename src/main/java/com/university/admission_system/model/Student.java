@@ -5,6 +5,9 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.validation.constraints.DecimalMax;
+import jakarta.validation.constraints.DecimalMin;
+import jakarta.validation.constraints.NotNull;
 
 @Entity
 public class Student {
@@ -17,9 +20,12 @@ public class Student {
     private String email;
     private String phone;
     private String course;
-    private double marks;
 
-    // Seat allocation fields
+    @NotNull(message = "Marks are required")
+    @DecimalMin(value = "0.0", message = "Marks cannot be less than 0")
+    @DecimalMax(value = "100.0", message = "Marks cannot exceed 100")
+    private Double marks;
+
     private String allocationStatus = "PENDING";
     private String allocatedCourse;
 
@@ -66,11 +72,11 @@ public class Student {
         this.course = course;
     }
 
-    public double getMarks() {
+    public Double getMarks() {
         return marks;
     }
 
-    public void setMarks(double marks) {
+    public void setMarks(Double marks) {
         this.marks = marks;
     }
 
