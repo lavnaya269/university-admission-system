@@ -4,263 +4,532 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Login | University Admission System</title>
+    <meta name="theme-color" content="#0b1630">
+    <meta name="description" content="Secure administrator login for the University Admission and Seat Allocation System.">
+    <title>Administrator Login | University Admission System</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
     <style>
+        :root {
+            --navy: #0b1630;
+            --navy-light: #14264a;
+            --blue: #4568f5;
+            --blue-dark: #3454dc;
+            --text: #192744;
+            --muted: #718099;
+            --border: #e3e9f3;
+            --background: #f5f7fc;
+            --white: #ffffff;
+        }
+
         * {
+            box-sizing: border-box;
             margin: 0;
             padding: 0;
-            box-sizing: border-box;
-            font-family: "Segoe UI", Arial, sans-serif;
         }
 
         body {
             min-height: 100vh;
-            background: linear-gradient(135deg, #eef2ff, #f5f3ff, #e0e7ff);
-            color: #1e293b;
+            display: flex;
+            flex-direction: column;
+            font-family: "DM Sans", "Segoe UI", Arial, sans-serif;
+            color: var(--text);
+            background:
+                radial-gradient(ellipse at 10% 10%, #dfe8ff 0, transparent 35%),
+                radial-gradient(ellipse at 95% 90%, #e8e5ff 0, transparent 35%),
+                var(--background);
+            -webkit-font-smoothing: antialiased;
         }
 
-        header {
-            background: #111c3a;
-            color: white;
-            padding: 20px 8%;
+        a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        a:focus-visible,
+        button:focus-visible,
+        input:focus-visible {
+            outline: 3px solid #86baff;
+            outline-offset: 3px;
+        }
+
+        /* Header */
+        .navbar {
+            position: relative;
+            z-index: 5;
+            background: rgba(255, 255, 255, .93);
+            border-bottom: 1px solid #e5eaf3;
+            backdrop-filter: blur(16px);
+        }
+
+        .nav-inner {
+            width: min(1160px, 90%);
+            min-height: 80px;
+            margin: auto;
             display: flex;
             align-items: center;
             justify-content: space-between;
-            gap: 20px;
-            box-shadow: 0 4px 18px #111c3a25;
+            gap: 24px;
         }
 
         .brand {
             display: flex;
             align-items: center;
-            gap: 13px;
+            gap: 12px;
         }
 
-        .logo {
-            width: 48px;
-            height: 48px;
-            border-radius: 14px;
-            background: linear-gradient(135deg, #818cf8, #a78bfa);
+        .brand-logo {
+            width: 46px;
+            height: 46px;
             display: grid;
             place-items: center;
-            font-size: 25px;
+            flex-shrink: 0;
+            border-radius: 15px;
+            color: white;
+            background: linear-gradient(140deg, #5275ff, #7258e9);
+            box-shadow: 0 7px 18px #4568f52c;
+            font-size: 24px;
         }
 
         .brand h2 {
-            font-size: 19px;
+            color: var(--navy);
+            font-family: "Manrope", sans-serif;
+            font-size: 15px;
+            font-weight: 800;
+            line-height: 1.35;
         }
 
         .brand p {
-            color: #c7d2fe;
-            font-size: 12px;
             margin-top: 4px;
+            color: var(--muted);
+            font-size: 11px;
         }
 
-        nav a {
-            color: white;
-            text-decoration: none;
-            margin-left: 22px;
-            font-size: 14px;
-        }
-
-        nav a:hover {
-            color: #c4b5fd;
-        }
-
-        main {
-            min-height: calc(100vh - 145px);
+        .nav-links {
             display: flex;
-            justify-content: center;
             align-items: center;
-            padding: 45px 20px;
+            gap: 7px;
+        }
+
+        .nav-links a {
+            padding: 10px 13px;
+            border-radius: 9px;
+            color: #53617b;
+            font-size: 13px;
+            font-weight: 600;
+            transition: background .2s, color .2s;
+        }
+
+        .nav-links a:hover {
+            color: var(--blue);
+            background: #eff2ff;
+        }
+
+        .nav-links .nav-home {
+            color: white;
+            background: var(--blue);
+        }
+
+        .nav-links .nav-home:hover {
+            color: white;
+            background: var(--blue-dark);
+        }
+
+        /* Main */
+        main {
+            flex: 1;
+            width: 100%;
+            display: grid;
+            place-items: center;
+            padding: 55px 20px;
         }
 
         .login-layout {
-            width: 100%;
-            max-width: 950px;
+            width: min(980px, 100%);
             display: grid;
             grid-template-columns: 1fr 1fr;
-            background: white;
-            border-radius: 24px;
             overflow: hidden;
-            box-shadow: 0 20px 60px #312e811c;
+            border: 1px solid #e7ebf4;
+            border-radius: 25px;
+            background: white;
+            box-shadow: 0 25px 80px rgba(18, 36, 75, .12);
         }
 
+        /* Left information panel */
         .welcome-panel {
-            padding: 55px 40px;
+            position: relative;
+            isolation: isolate;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            min-height: 570px;
+            padding: 43px;
             color: white;
-            background: linear-gradient(145deg, #172554, #4338ca, #7c3aed);
+            background:
+                radial-gradient(ellipse at 95% 10%, #6d8aff45, transparent 38%),
+                linear-gradient(145deg, #0b1630, #142b55 65%, #293d84);
+        }
+
+        .welcome-panel::before {
+            content: "";
+            position: absolute;
+            z-index: -1;
+            width: 350px;
+            height: 350px;
+            right: -155px;
+            top: 100px;
+            border: 1px solid #ffffff20;
+            border-radius: 50%;
+            box-shadow: 0 0 0 35px #ffffff08, 0 0 0 70px #ffffff05;
+        }
+
+        .security-label {
+            width: fit-content;
+            display: inline-flex;
+            align-items: center;
+            gap: 9px;
+            padding: 9px 13px;
+            border: 1px solid #ffffff2c;
+            border-radius: 30px;
+            color: #e1eaff;
+            background: #ffffff0c;
+            font-size: 10px;
+            font-weight: 800;
+            letter-spacing: 1.2px;
+        }
+
+        .security-label span {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #70e1bb;
+            box-shadow: 0 0 10px #70e1bb80;
+        }
+
+        .welcome-content {
+            margin: 45px 0;
+        }
+
+        .welcome-icon {
+            width: 62px;
+            height: 62px;
+            display: grid;
+            place-items: center;
+            margin-bottom: 25px;
+            border: 1px solid #ffffff25;
+            border-radius: 19px;
+            background: #ffffff13;
+            font-size: 30px;
+        }
+
+        .welcome-content h1 {
+            max-width: 400px;
+            margin-bottom: 19px;
+            font-family: "Manrope", sans-serif;
+            font-size: clamp(30px, 3.4vw, 42px);
+            font-weight: 800;
+            line-height: 1.2;
+            letter-spacing: -1.4px;
+        }
+
+        .welcome-content h1 span {
+            color: #92caff;
+        }
+
+        .welcome-content > p {
+            max-width: 380px;
+            color: #c4d1e9;
+            font-size: 13px;
+            line-height: 1.95;
+        }
+
+        .feature-list {
+            display: grid;
+            gap: 17px;
+            margin-top: 28px;
+        }
+
+        .feature {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            color: #edf2ff;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .feature-check {
+            width: 28px;
+            height: 28px;
+            display: grid;
+            place-items: center;
+            flex-shrink: 0;
+            border-radius: 9px;
+            color: #9fe7d0;
+            background: #ffffff13;
+            font-size: 13px;
+        }
+
+        .panel-footer {
+            padding-top: 19px;
+            border-top: 1px solid #ffffff20;
+            color: #aabbd8;
+            font-size: 11px;
+            line-height: 1.8;
+        }
+
+        /* Login form */
+        .login-panel {
             display: flex;
             flex-direction: column;
             justify-content: center;
+            padding: 43px;
         }
 
-        .welcome-panel .tag {
-            background: #ffffff20;
-            border: 1px solid #ffffff35;
-            padding: 8px 13px;
-            border-radius: 30px;
-            font-size: 12px;
-            width: fit-content;
-            margin-bottom: 25px;
-        }
-
-        .welcome-panel h1 {
-            font-size: 34px;
-            line-height: 1.25;
-            margin-bottom: 18px;
-        }
-
-        .welcome-panel p {
-            color: #e0e7ff;
-            line-height: 1.8;
-            font-size: 14px;
-        }
-
-        .features {
-            margin-top: 30px;
-            line-height: 2.5;
-            font-size: 14px;
-            color: #f5f3ff;
-        }
-
-        .login-panel {
-            padding: 55px 40px;
+        .login-heading {
+            margin-bottom: 29px;
         }
 
         .admin-icon {
-            width: 58px;
-            height: 58px;
+            width: 57px;
+            height: 57px;
             display: grid;
             place-items: center;
-            border-radius: 17px;
-            background: #eef2ff;
-            font-size: 28px;
             margin-bottom: 22px;
+            border: 1px solid #e0e7ff;
+            border-radius: 17px;
+            background: linear-gradient(145deg, #eff2ff, #f4f1ff);
+            font-size: 27px;
         }
 
-        .login-panel h2 {
-            font-size: 28px;
-            color: #172554;
+        .login-heading .eyebrow {
+            display: block;
+            margin-bottom: 8px;
+            color: var(--blue);
+            font-size: 10px;
+            font-weight: 800;
+            letter-spacing: 1.7px;
+            text-transform: uppercase;
+        }
+
+        .login-heading h2 {
             margin-bottom: 10px;
+            color: var(--navy);
+            font-family: "Manrope", sans-serif;
+            font-size: 29px;
+            font-weight: 800;
+            letter-spacing: -.8px;
         }
 
-        .subtitle {
-            color: #64748b;
-            font-size: 14px;
-            line-height: 1.6;
-            margin-bottom: 28px;
+        .login-heading p {
+            color: var(--muted);
+            font-size: 13px;
+            line-height: 1.8;
         }
 
         .error {
-            background: #fef2f2;
-            color: #b91c1c;
+            margin-bottom: 20px;
+            padding: 13px 14px;
             border: 1px solid #fecaca;
-            padding: 12px;
-            border-radius: 9px;
-            font-size: 13px;
-            margin-bottom: 18px;
+            border-radius: 11px;
+            color: #b42318;
+            background: #fff4f3;
+            font-size: 12px;
+            line-height: 1.7;
+        }
+
+        .error:empty {
+            display: none;
         }
 
         .form-group {
             margin-bottom: 20px;
         }
 
-        label {
+        .form-group label {
             display: block;
-            font-weight: 600;
-            font-size: 13px;
             margin-bottom: 9px;
-            color: #334155;
+            color: #293751;
+            font-size: 12px;
+            font-weight: 700;
         }
 
-        input {
+        .input-wrap {
+            position: relative;
+        }
+
+        .input-icon {
+            position: absolute;
+            top: 50%;
+            left: 14px;
+            transform: translateY(-50%);
+            color: #8592aa;
+            font-size: 17px;
+            pointer-events: none;
+        }
+
+        .form-group input {
             width: 100%;
-            padding: 14px 15px;
-            border: 1px solid #cbd5e1;
-            border-radius: 10px;
+            min-height: 49px;
+            padding: 13px 44px 13px 43px;
+            border: 1px solid #dce3ef;
+            border-radius: 11px;
             outline: none;
-            font-size: 14px;
-            background: #f8fafc;
-            transition: 0.2s;
+            color: var(--text);
+            background: #fafbfe;
+            font-family: inherit;
+            font-size: 13px;
+            transition: border-color .2s, background .2s, box-shadow .2s;
         }
 
-        input:focus {
-            border-color: #6366f1;
+        .form-group input::placeholder {
+            color: #9aa5b8;
+        }
+
+        .form-group input:focus {
+            border-color: var(--blue);
             background: white;
-            box-shadow: 0 0 0 4px #6366f120;
+            box-shadow: 0 0 0 4px #4568f51a;
+        }
+
+        .password-toggle {
+            position: absolute;
+            top: 50%;
+            right: 12px;
+            transform: translateY(-50%);
+            display: grid;
+            place-items: center;
+            width: 30px;
+            height: 30px;
+            border: 0;
+            border-radius: 7px;
+            color: #6d7890;
+            background: transparent;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        .password-toggle:hover {
+            color: var(--blue);
+            background: #eff2ff;
         }
 
         .login-button {
             width: 100%;
-            border: none;
-            border-radius: 10px;
-            padding: 15px;
-            background: linear-gradient(100deg, #4338ca, #7c3aed);
+            min-height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 7px;
+            padding: 14px 18px;
+            border: 0;
+            border-radius: 11px;
             color: white;
-            font-size: 15px;
-            font-weight: 700;
+            background: linear-gradient(105deg, #4568f5, #6557e8);
+            box-shadow: 0 8px 20px #4568f52a;
+            font-family: inherit;
+            font-size: 13px;
+            font-weight: 800;
             cursor: pointer;
-            margin-top: 5px;
-            transition: transform 0.2s, box-shadow 0.2s;
+            transition: transform .2s, box-shadow .2s;
         }
 
         .login-button:hover {
             transform: translateY(-2px);
-            box-shadow: 0 8px 20px #6366f140;
+            box-shadow: 0 12px 25px #4568f540;
         }
+
+        .login-button:active {
+            transform: translateY(0);
+        }
+
+        .login-button span {
+            font-size: 18px;
+        }
+
+        .secure-note {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 7px;
+            margin-top: 20px;
+            color: #75839a;
+            font-size: 11px;
+        }
+
+        .secure-note span { color: #219b79; }
 
         .back-link {
             display: block;
+            margin-top: 24px;
+            padding-top: 20px;
+            border-top: 1px solid #edf0f6;
+            color: #53617b;
             text-align: center;
-            margin-top: 25px;
-            color: #4f46e5;
-            text-decoration: none;
-            font-size: 14px;
-            font-weight: 600;
-        }
-
-        .back-link:hover {
-            text-decoration: underline;
-        }
-
-        footer {
-            text-align: center;
-            padding: 18px;
-            color: #64748b;
             font-size: 12px;
+            font-weight: 700;
+            transition: color .2s;
         }
 
-        @media (max-width: 700px) {
-            header {
-                padding: 17px 5%;
-                flex-wrap: wrap;
+        .back-link:hover { color: var(--blue); }
+
+        /* Footer */
+        footer {
+            padding: 19px 20px;
+            color: #7c879b;
+            text-align: center;
+            font-size: 11px;
+        }
+
+        /* Responsive */
+        @media (max-width: 820px) {
+            .nav-inner { width: 92%; }
+            .login-layout { max-width: 570px; grid-template-columns: 1fr; }
+            .welcome-panel { min-height: auto; padding: 30px; }
+            .welcome-content { margin: 27px 0; }
+            .welcome-content h1 { font-size: 32px; }
+            .welcome-content > p { max-width: 500px; }
+            .feature-list { grid-template-columns: 1fr 1fr; }
+            .panel-footer { display: none; }
+            .login-panel { padding: 35px 30px; }
+        }
+
+        @media (max-width: 520px) {
+            .nav-inner {
+                width: 90%;
+                min-height: 75px;
+                align-items: flex-start;
+                flex-direction: column;
+                justify-content: center;
+                gap: 13px;
+                padding: 14px 0;
             }
 
-            nav a {
-                margin-left: 0;
-                margin-right: 15px;
-            }
+            .brand-logo { width: 41px; height: 41px; }
+            .brand h2 { font-size: 13px; }
+            .nav-links { width: 100%; justify-content: space-between; gap: 3px; }
+            .nav-links a { padding: 9px 8px; font-size: 11px; }
 
-            .login-layout {
-                grid-template-columns: 1fr;
-            }
+            main { padding: 28px 14px; }
+            .login-layout { border-radius: 19px; }
+            .welcome-panel { padding: 25px 22px; }
+            .welcome-content { margin: 25px 0; }
+            .welcome-content h1 { font-size: 30px; }
+            .welcome-content > p { font-size: 12px; }
+            .feature-list { grid-template-columns: 1fr; gap: 12px; }
+            .login-panel { padding: 29px 22px; }
+            .login-heading h2 { font-size: 26px; }
+        }
 
-            .welcome-panel {
-                padding: 35px 28px;
-            }
-
-            .welcome-panel h1 {
-                font-size: 28px;
-            }
-
-            .features {
-                display: none;
-            }
-
-            .login-panel {
-                padding: 35px 28px;
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after {
+                transition-duration: .01ms !important;
+                scroll-behavior: auto !important;
             }
         }
     </style>
@@ -268,90 +537,148 @@
 
 <body>
 
-<header>
-    <div class="brand">
-        <div class="logo">🎓</div>
-        <div>
-            <h2>University Portal</h2>
-            <p>Admission & Seat Allocation System</p>
-        </div>
-    </div>
+<header class="navbar">
+    <div class="nav-inner">
+        <a class="brand" href="/" aria-label="University Admission System home">
+            <span class="brand-logo" aria-hidden="true">🎓</span>
+            <span>
+                <h2>University Admission System</h2>
+                <p>Admissions &amp; Seat Allocation</p>
+            </span>
+        </a>
 
-    <nav>
-        <a href="/">Home</a>
-        <a href="/admission">Apply</a>
-        <a href="/allocation">Check Status</a>
-    </nav>
+        <nav class="nav-links" aria-label="Main navigation">
+            <a class="nav-home" href="/">Home</a>
+            <a href="/admission">Apply</a>
+            <a href="/allocation">Check Status</a>
+        </nav>
+    </div>
 </header>
 
 <main>
     <div class="login-layout">
 
         <section class="welcome-panel">
-            <div class="tag">🔐 ADMINISTRATOR ACCESS</div>
+            <div class="security-label">
+                <span aria-hidden="true"></span>
+                AUTHORIZED ADMINISTRATOR ACCESS
+            </div>
 
-            <h1>Manage Admissions.<br>Shape Futures.</h1>
+            <div class="welcome-content">
+                <div class="welcome-icon" aria-hidden="true">🎓</div>
 
-            <p>
-                Welcome to the university administration portal.
-                Sign in to review applications and manage student
-                seat allocation from one place.
-            </p>
+                <h1>Manage Admissions.<br><span>Shape Futures.</span></h1>
 
-            <div class="features">
-                ✓ &nbsp; View student applications<br>
-                ✓ &nbsp; Manage seat allocation<br>
-                ✓ &nbsp; Track admission status
+                <p>
+                    Welcome to the university administration portal.
+                    Sign in to review student applications and manage
+                    seat allocation through one organized workspace.
+                </p>
+
+                <div class="feature-list">
+                    <div class="feature">
+                        <span class="feature-check" aria-hidden="true">✓</span>
+                        Review student applications
+                    </div>
+                    <div class="feature">
+                        <span class="feature-check" aria-hidden="true">✓</span>
+                        Manage seat allocation
+                    </div>
+                    <div class="feature">
+                        <span class="feature-check" aria-hidden="true">✓</span>
+                        Track admission records
+                    </div>
+                </div>
+            </div>
+
+            <div class="panel-footer">
+                University Admission &amp; Automated Seat Allocation System
             </div>
         </section>
 
         <section class="login-panel">
-            <div class="admin-icon">👨‍💼</div>
+            <div class="login-heading">
+                <div class="admin-icon" aria-hidden="true">👨‍💼</div>
+                <span class="eyebrow">Administrator portal</span>
+                <h2>Welcome back</h2>
+                <p>Enter your administrator credentials to access your dashboard.</p>
+            </div>
 
-            <h2>Admin Login</h2>
-            <p class="subtitle">
-                Enter your administrator credentials to continue.
-            </p>
-
-            <p class="error" th:if="${error}" th:text="${error}"></p>
+            <p class="error" role="alert" aria-live="polite"
+               th:if="${error}" th:text="${error}"></p>
 
             <form action="/admin/login" method="post">
                 <div class="form-group">
                     <label for="username">Username</label>
-                    <input
-                        type="text"
-                        id="username"
-                        name="username"
-                        placeholder="Enter your username"
-                        autocomplete="username"
-                        required>
+                    <div class="input-wrap">
+                        <span class="input-icon" aria-hidden="true">♙</span>
+                        <input
+                            type="text"
+                            id="username"
+                            name="username"
+                            placeholder="Enter your username"
+                            autocomplete="username"
+                            autocapitalize="none"
+                            spellcheck="false"
+                            required>
+                    </div>
                 </div>
 
                 <div class="form-group">
                     <label for="password">Password</label>
-                    <input
-                        type="password"
-                        id="password"
-                        name="password"
-                        placeholder="Enter your password"
-                        autocomplete="current-password"
-                        required>
+                    <div class="input-wrap">
+                        <span class="input-icon" aria-hidden="true">♙</span>
+                        <input
+                            type="password"
+                            id="password"
+                            name="password"
+                            placeholder="Enter your password"
+                            autocomplete="current-password"
+                            required>
+
+                        <button class="password-toggle" type="button"
+                                id="togglePassword"
+                                aria-label="Show password"
+                                aria-pressed="false">◉</button>
+                    </div>
                 </div>
 
                 <button class="login-button" type="submit">
-                    Sign In to Dashboard &rarr;
+                    Sign In to Dashboard <span aria-hidden="true">→</span>
                 </button>
             </form>
 
-            <a class="back-link" href="/">← Back to Home</a>
+            <div class="secure-note">
+                <span aria-hidden="true">●</span>
+                Authorized access only
+            </div>
+
+            <a class="back-link" href="/">← &nbsp; Back to Home</a>
         </section>
 
     </div>
 </main>
 
 <footer>
-    © 2026 University Admission & Seat Allocation System
+    © 2026 University Admission &amp; Seat Allocation System
 </footer>
+
+<script>
+    const passwordInput = document.getElementById("password");
+    const togglePassword = document.getElementById("togglePassword");
+
+    togglePassword.addEventListener("click", function () {
+        const showPassword = passwordInput.type === "password";
+
+        passwordInput.type = showPassword ? "text" : "password";
+        togglePassword.setAttribute("aria-pressed", String(showPassword));
+        togglePassword.setAttribute(
+            "aria-label",
+            showPassword ? "Hide password" : "Show password"
+        );
+        togglePassword.textContent = showPassword ? "◎" : "◉";
+    });
+</script>
 
 </body>
 </html>

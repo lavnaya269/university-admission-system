@@ -4,248 +4,794 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>University Admission Portal</title>
+    <meta name="theme-color" content="#0b1020">
+    <title>Student Admission | University Admission Portal</title>
 
     <style>
+        :root {
+            --navy: #0b1020;
+            --navy-light: #131d38;
+            --blue: #4f7cff;
+            --blue-dark: #315ce5;
+            --text: #17213b;
+            --muted: #68748b;
+            --border: #dfe5f0;
+            --surface: #ffffff;
+            --background: #f4f7fc;
+            --success: #16845b;
+        }
+
         * {
             box-sizing: border-box;
             margin: 0;
             padding: 0;
-            font-family: "Segoe UI", Arial, sans-serif;
         }
 
         body {
             min-height: 100vh;
-            padding: 30px 15px;
-            background: linear-gradient(135deg, #111a38, #3730a3, #6366f1);
-            color: #172033;
+            font-family: "Segoe UI", Arial, sans-serif;
+            color: var(--text);
+            background: var(--background);
         }
 
-        header {
-            text-align: center;
+        a {
+            text-decoration: none;
+        }
+
+        .topbar {
+            background: var(--navy);
             color: white;
-            margin: 10px 0 25px;
+            padding: 17px 6%;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+            flex-wrap: wrap;
         }
 
-        header h1 {
-            font-size: 30px;
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            color: white;
+        }
+
+        .brand-icon {
+            width: 43px;
+            height: 43px;
+            display: grid;
+            place-items: center;
+            border-radius: 13px;
+            background: linear-gradient(135deg, #4f7cff, #7659ef);
+            font-size: 23px;
+        }
+
+        .brand-name {
+            font-size: 17px;
+            font-weight: 750;
+        }
+
+        .brand-subtitle {
+            color: #aebbd5;
+            font-size: 12px;
+            margin-top: 3px;
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 24px;
+            flex-wrap: wrap;
+        }
+
+        .nav-links a {
+            color: #d9e2f5;
+            font-size: 13px;
+            transition: color .2s;
+        }
+
+        .nav-links a:hover {
+            color: white;
+        }
+
+        .nav-links .nav-cta {
+            padding: 10px 15px;
+            background: var(--blue);
+            border-radius: 9px;
+            color: white;
+            font-weight: 650;
+        }
+
+        .hero {
+            position: relative;
+            overflow: hidden;
+            padding: 48px 20px 82px;
+            color: white;
+            background:
+                radial-gradient(ellipse at 85% 20%, #4f7cff42, transparent 40%),
+                linear-gradient(120deg, var(--navy), #172b59);
+        }
+
+        .hero-content {
+            max-width: 850px;
+            margin: auto;
+            text-align: center;
+        }
+
+        .eyebrow {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 13px;
+            margin-bottom: 17px;
+            border: 1px solid #ffffff26;
+            border-radius: 50px;
+            background: #ffffff0c;
+            color: #d5e1ff;
+            font-size: 12px;
+            font-weight: 650;
+            letter-spacing: .6px;
+            text-transform: uppercase;
+        }
+
+        .eyebrow-dot {
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            background: #70e1b5;
+        }
+
+        .hero h1 {
+            font-size: clamp(29px, 4.5vw, 43px);
+            line-height: 1.2;
+            letter-spacing: -1px;
+            margin-bottom: 13px;
+        }
+
+        .hero h1 span {
+            color: #83a6ff;
+        }
+
+        .hero p {
+            max-width: 600px;
+            margin: auto;
+            color: #c1cce2;
+            font-size: 15px;
+            line-height: 1.8;
+        }
+
+        .page-container {
+            width: min(1080px, calc(100% - 32px));
+            margin: -43px auto 55px;
+            position: relative;
+        }
+
+        .admission-card {
+            display: grid;
+            grid-template-columns: 280px minmax(0, 1fr);
+            overflow: hidden;
+            border: 1px solid #e4e9f3;
+            border-radius: 22px;
+            background: var(--surface);
+            box-shadow: 0 22px 65px #182c5415;
+        }
+
+        .side-panel {
+            padding: 34px 27px;
+            color: white;
+            background:
+                radial-gradient(circle at 0 0, #4f7cff38, transparent 45%),
+                linear-gradient(160deg, #131d38, #1a2e59);
+        }
+
+        .side-icon {
+            display: grid;
+            place-items: center;
+            width: 54px;
+            height: 54px;
+            margin-bottom: 24px;
+            border-radius: 16px;
+            background: #ffffff14;
+            border: 1px solid #ffffff20;
+            font-size: 27px;
+        }
+
+        .side-panel h2 {
+            font-size: 22px;
+            line-height: 1.4;
+            margin-bottom: 12px;
+        }
+
+        .side-panel > p {
+            color: #c0cce4;
+            font-size: 13px;
+            line-height: 1.8;
+        }
+
+        .benefits {
+            list-style: none;
+            margin-top: 28px;
+            display: grid;
+            gap: 20px;
+        }
+
+        .benefits li {
+            display: flex;
+            gap: 11px;
+            align-items: flex-start;
+            color: #e0e8f8;
+            font-size: 13px;
+            line-height: 1.6;
+        }
+
+        .check {
+            flex-shrink: 0;
+            display: grid;
+            place-items: center;
+            width: 22px;
+            height: 22px;
+            border-radius: 7px;
+            background: #70e1b51c;
+            color: #83edc4;
+            font-weight: 800;
+        }
+
+        .side-note {
+            margin-top: 35px;
+            padding: 15px;
+            border-radius: 12px;
+            background: #ffffff0b;
+            border: 1px solid #ffffff18;
+            color: #d3def2;
+            font-size: 12px;
+            line-height: 1.7;
+        }
+
+        .form-panel {
+            min-width: 0;
+            padding: 37px 38px;
+        }
+
+        .form-heading {
+            padding-bottom: 24px;
+            margin-bottom: 25px;
+            border-bottom: 1px solid #edf0f6;
+        }
+
+        .form-heading h2 {
+            color: var(--navy);
+            font-size: 24px;
+            letter-spacing: -.4px;
             margin-bottom: 8px;
         }
 
-        header p {
-            color: #e0e7ff;
+        .form-heading p {
+            color: var(--muted);
+            font-size: 13px;
+            line-height: 1.7;
         }
 
-        .form-card {
-            max-width: 650px;
-            margin: auto;
-            padding: 32px;
-            border-radius: 18px;
-            background: white;
-            box-shadow: 0 15px 45px #0003;
+        .required-note {
+            margin-top: 12px;
+            font-size: 12px;
+            color: var(--muted);
         }
 
-        h2 {
-            text-align: center;
-            color: #3730a3;
-            margin-bottom: 20px;
+        .required-note span {
+            color: #e14b63;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 21px 18px;
+        }
+
+        .field {
+            min-width: 0;
+        }
+
+        .field.full-width {
+            grid-column: 1 / -1;
         }
 
         label {
             display: block;
-            margin: 16px 0 7px;
-            font-weight: 600;
+            margin-bottom: 8px;
+            color: #25314b;
+            font-size: 13px;
+            font-weight: 700;
         }
 
-        input, select {
+        .required {
+            color: #e14b63;
+            margin-left: 2px;
+        }
+
+        .input-wrap {
+            position: relative;
+        }
+
+        .field input,
+        .field select {
             display: block;
             width: 100%;
-            padding: 12px;
-            border: 1px solid #cbd5e1;
-            border-radius: 9px;
-            background: white;
-            color: #172033;
-            font-size: 15px;
+            min-height: 47px;
+            padding: 12px 13px;
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            background: #fff;
+            color: var(--text);
+            font: inherit;
+            font-size: 13px;
+            transition: border-color .2s, box-shadow .2s;
         }
 
-        input:focus, select:focus {
-            outline: 2px solid #818cf8;
-            border-color: #6366f1;
+        .field input::placeholder {
+            color: #9ba5b8;
         }
 
-        button {
-            width: 100%;
-            margin-top: 24px;
-            padding: 14px;
-            border: none;
-            border-radius: 9px;
-            background: #3730a3;
-            color: white;
-            font-size: 16px;
-            font-weight: bold;
+        .field input:focus,
+        .field select:focus {
+            outline: none;
+            border-color: var(--blue);
+            box-shadow: 0 0 0 3px #4f7cff1c;
+        }
+
+        .field select {
             cursor: pointer;
         }
 
-        button:hover {
-            background: #25215f;
+        .field input[type="number"] {
+            appearance: textfield;
+            -moz-appearance: textfield;
         }
 
-        .back {
-            display: block;
-            margin-top: 20px;
+        .field input[type="number"]::-webkit-inner-spin-button,
+        .field input[type="number"]::-webkit-outer-spin-button {
+            opacity: 1;
+        }
+
+        .field-help {
+            margin-top: 7px;
+            color: var(--muted);
+            font-size: 11px;
+            line-height: 1.6;
+        }
+
+        .form-actions {
+            margin-top: 28px;
+            padding-top: 23px;
+            border-top: 1px solid #edf0f6;
+        }
+
+        .submit-button {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+            width: 100%;
+            min-height: 51px;
+            padding: 14px 18px;
+            border: none;
+            border-radius: 10px;
+            background: linear-gradient(100deg, var(--blue-dark), #6559ed);
+            box-shadow: 0 8px 20px #4f7cff30;
+            color: white;
+            font: inherit;
+            font-size: 14px;
+            font-weight: 750;
+            cursor: pointer;
+            transition: transform .2s, box-shadow .2s;
+        }
+
+        .submit-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 25px #4f7cff40;
+        }
+
+        .submit-button:focus-visible {
+            outline: 3px solid #91aaff;
+            outline-offset: 3px;
+        }
+
+        .submit-button:disabled {
+            opacity: .7;
+            cursor: wait;
+            transform: none;
+        }
+
+        .form-footnote {
+            margin-top: 14px;
+            color: var(--muted);
             text-align: center;
-            color: #3730a3;
-            text-decoration: none;
+            font-size: 11px;
+            line-height: 1.7;
         }
 
-        .back:hover {
-            text-decoration: underline;
+        .form-footnote strong {
+            color: var(--success);
+        }
+
+        .back-link {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 8px;
+            width: fit-content;
+            margin: 24px auto 0;
+            color: #52617b;
+            font-size: 13px;
+            font-weight: 650;
+            transition: color .2s;
+        }
+
+        .back-link:hover {
+            color: var(--blue-dark);
         }
 
         footer {
-            margin-top: 25px;
+            padding: 22px 16px;
+            border-top: 1px solid #e4e9f2;
+            background: white;
             text-align: center;
-            color: #e0e7ff;
-            font-size: 13px;
+            color: #778198;
+            font-size: 12px;
+            line-height: 1.8;
         }
 
-        @media (max-width: 500px) {
-            .form-card {
-                padding: 22px;
+        footer strong {
+            color: #25314b;
+        }
+
+        @media (max-width: 800px) {
+            .admission-card {
+                grid-template-columns: 1fr;
             }
 
-            header h1 {
-                font-size: 24px;
+            .side-panel {
+                padding: 27px;
+            }
+
+            .side-icon {
+                margin-bottom: 15px;
+            }
+
+            .benefits {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+                gap: 14px;
+            }
+
+            .side-note {
+                margin-top: 23px;
+            }
+
+            .form-panel {
+                padding: 30px 27px;
+            }
+        }
+
+        @media (max-width: 520px) {
+            .topbar {
+                padding: 15px 18px;
+            }
+
+            .brand-name {
+                font-size: 15px;
+            }
+
+            .nav-links {
+                gap: 15px;
+            }
+
+            .hero {
+                padding: 37px 19px 70px;
+            }
+
+            .hero h1 {
+                letter-spacing: -.5px;
+            }
+
+            .page-container {
+                width: calc(100% - 22px);
+                margin-top: -35px;
+            }
+
+            .admission-card {
+                border-radius: 17px;
+            }
+
+            .side-panel {
+                padding: 23px 20px;
+            }
+
+            .benefits {
+                grid-template-columns: 1fr;
+                gap: 12px;
+            }
+
+            .form-panel {
+                padding: 25px 20px;
+            }
+
+            .form-heading h2 {
+                font-size: 21px;
+            }
+
+            .form-grid {
+                grid-template-columns: 1fr;
+                gap: 18px;
+            }
+
+            .field.full-width {
+                grid-column: auto;
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after {
+                scroll-behavior: auto !important;
+                transition: none !important;
             }
         }
     </style>
 </head>
 
 <body>
+<header class="topbar">
+    <a class="brand" th:href="@{/}" aria-label="University Admission Portal home">
+        <div class="brand-icon">🎓</div>
+        <div>
+            <div class="brand-name">University Admission Portal</div>
+            <div class="brand-subtitle">Smart Admissions. Brighter Futures.</div>
+        </div>
+    </a>
 
-<header>
-    <h1>🎓 University Admission Portal</h1>
-    <p>University Admission &amp; Automated Seat Allocation System</p>
+    <nav class="nav-links" aria-label="Main navigation">
+        <a th:href="@{/}">Home</a>
+        <a th:href="@{/allocation}">Check Allocation</a>
+        <a class="nav-cta" th:href="@{/admin}">Admin Portal ↗</a>
+    </nav>
 </header>
 
-<main class="form-card">
-    <h2>Student Admission Form</h2>
+<section class="hero">
+    <div class="hero-content">
+        <div class="eyebrow">
+            <span class="eyebrow-dot"></span>
+            Your future starts here
+        </div>
+        <h1>Take the first step toward<br><span>your dream career.</span></h1>
+        <p>
+            Complete your application with the details below.
+            We'll send a verification code to your email to help secure your application.
+        </p>
+    </div>
+</section>
 
-    <form th:action="@{/admission/send-otp}"
-          th:object="${student}"
-          method="post">
+<main class="page-container">
+    <div class="admission-card">
+        <aside class="side-panel">
+            <div class="side-icon">📚</div>
+            <h2>One application.<br>New possibilities.</h2>
+            <p>
+                Start your academic journey with a simple, secure admission process.
+                Make sure your information is accurate before submitting.
+            </p>
 
-        <label for="fullName">Full Name</label>
-        <input type="text"
-               id="fullName"
-               th:field="*{fullName}"
-               placeholder="Enter your full name"
-               required>
+            <ul class="benefits">
+                <li>
+                    <span class="check">✓</span>
+                    <span>Easy online application</span>
+                </li>
+                <li>
+                    <span class="check">✓</span>
+                    <span>Email OTP verification</span>
+                </li>
+                <li>
+                    <span class="check">✓</span>
+                    <span>Merit-based seat allocation</span>
+                </li>
+                <li>
+                    <span class="check">✓</span>
+                    <span>Check your allocation online</span>
+                </li>
+            </ul>
 
-        <label for="email">Email Address</label>
-        <input type="email"
-               id="email"
-               th:field="*{email}"
-               placeholder="Enter your email"
-               required>
+            <div class="side-note">
+                <strong>Before you begin</strong><br>
+                Keep your email address accessible. You may need the verification code
+                to complete your application.
+            </div>
+        </aside>
 
-        <label for="phone">Phone Number</label>
-        <input type="tel"
-               id="phone"
-               th:field="*{phone}"
-               placeholder="Enter your phone number"
-               required>
+        <section class="form-panel">
+            <div class="form-heading">
+                <h2>Student Admission Form</h2>
+                <p>Enter your details carefully. Fields marked with an asterisk (*) are required.</p>
+                <div class="required-note"><span>*</span> Required information</div>
+            </div>
 
-        <label for="course">Preferred Course</label>
-        <select id="course" th:field="*{course}" required>
-            <option value="">-- Select Course --</option>
+            <form id="admissionForm"
+                  th:action="@{/admission/send-otp}"
+                  th:object="${student}"
+                  method="post">
 
-            <optgroup label="Science and Technology">
-                <option value="BSc Information Technology">BSc Information Technology</option>
-                <option value="BSc Computer Science">BSc Computer Science</option>
-                <option value="BSc Mathematics">BSc Mathematics</option>
-                <option value="BSc Physics">BSc Physics</option>
-                <option value="BSc Chemistry">BSc Chemistry</option>
-                <option value="BSc Statistics">BSc Statistics</option>
-                <option value="BSc Data Science">BSc Data Science</option>
-                <option value="BSc Artificial Intelligence">BSc Artificial Intelligence</option>
-                <option value="BSc Cyber Security">BSc Cyber Security</option>
-                <option value="BSc Biotechnology">BSc Biotechnology</option>
-                <option value="BSc Microbiology">BSc Microbiology</option>
-                <option value="BSc Botany">BSc Botany</option>
-                <option value="BSc Zoology">BSc Zoology</option>
-                <option value="BSc Environmental Science">BSc Environmental Science</option>
-            </optgroup>
+                <div class="form-grid">
+                    <div class="field full-width">
+                        <label for="fullName">Full Name <span class="required">*</span></label>
+                        <input type="text"
+                               id="fullName"
+                               th:field="*{fullName}"
+                               placeholder="Enter your full name"
+                               autocomplete="name"
+                               maxlength="100"
+                               required>
+                    </div>
 
-            <optgroup label="Computer Applications and Engineering">
-                <option value="BCA">BCA</option>
-                <option value="MCA">MCA</option>
-                <option value="BTech Computer Science">BTech Computer Science</option>
-                <option value="BTech Information Technology">BTech Information Technology</option>
-                <option value="BTech Artificial Intelligence">BTech Artificial Intelligence</option>
-                <option value="BTech Data Science">BTech Data Science</option>
-                <option value="BTech Electronics">BTech Electronics</option>
-                <option value="BTech Mechanical Engineering">BTech Mechanical Engineering</option>
-                <option value="BTech Civil Engineering">BTech Civil Engineering</option>
-                <option value="BTech Electrical Engineering">BTech Electrical Engineering</option>
-            </optgroup>
+                    <div class="field full-width">
+                        <label for="email">Email Address <span class="required">*</span></label>
+                        <input type="email"
+                               id="email"
+                               th:field="*{email}"
+                               placeholder="you@example.com"
+                               autocomplete="email"
+                               maxlength="254"
+                               required>
+                        <p class="field-help">Use an email address you can access to receive your OTP.</p>
+                    </div>
 
-            <optgroup label="Commerce and Management">
-                <option value="BCom">BCom</option>
-                <option value="BCom Accounting and Finance">BCom Accounting and Finance</option>
-                <option value="BCom Banking and Insurance">BCom Banking and Insurance</option>
-                <option value="BCom Financial Markets">BCom Financial Markets</option>
-                <option value="BMS">BMS</option>
-                <option value="BBA">BBA</option>
-                <option value="MBA">MBA</option>
-                <option value="BAF">BAF</option>
-                <option value="BBI">BBI</option>
-                <option value="BFM">BFM</option>
-            </optgroup>
+                    <div class="field">
+                        <label for="phone">Phone Number <span class="required">*</span></label>
+                        <input type="tel"
+                               id="phone"
+                               th:field="*{phone}"
+                               placeholder="Enter phone number"
+                               autocomplete="tel"
+                               maxlength="20"
+                               required>
+                    </div>
 
-            <optgroup label="Arts and Humanities">
-                <option value="BA">BA</option>
-                <option value="BA English">BA English</option>
-                <option value="BA Psychology">BA Psychology</option>
-                <option value="BA Economics">BA Economics</option>
-                <option value="BA Sociology">BA Sociology</option>
-                <option value="BA Political Science">BA Political Science</option>
-                <option value="BA History">BA History</option>
-                <option value="BA Geography">BA Geography</option>
-                <option value="BA Philosophy">BA Philosophy</option>
-            </optgroup>
+                    <div class="field">
+                        <label for="marks">Marks / Percentage <span class="required">*</span></label>
+                        <input type="number"
+                               id="marks"
+                               th:field="*{marks}"
+                               min="0"
+                               max="100"
+                               step="0.01"
+                               placeholder="e.g. 85.50"
+                               inputmode="decimal"
+                               required>
+                        <p class="field-help">Enter a value between 0 and 100.</p>
+                    </div>
 
-            <optgroup label="Other Professional Courses">
-                <option value="Bachelor of Design">Bachelor of Design</option>
-                <option value="Bachelor of Journalism">Bachelor of Journalism</option>
-                <option value="Bachelor of Social Work">Bachelor of Social Work</option>
-                <option value="Bachelor of Hotel Management">Bachelor of Hotel Management</option>
-                <option value="Bachelor of Education">Bachelor of Education</option>
-                <option value="Bachelor of Pharmacy">Bachelor of Pharmacy</option>
-                <option value="Bachelor of Architecture">Bachelor of Architecture</option>
-                <option value="Bachelor of Law">Bachelor of Law</option>
-            </optgroup>
-        </select>
+                    <div class="field full-width">
+                        <label for="course">Preferred Course <span class="required">*</span></label>
+                        <select id="course" th:field="*{course}" required>
+                            <option value="">-- Select your preferred course --</option>
 
-        <label for="marks">Marks / Percentage</label>
-        <input type="number"
-               id="marks"
-               th:field="*{marks}"
-               min="0"
-               max="100"
-               step="0.01"
-               placeholder="Enter marks out of 100"
-               required>
+                            <optgroup label="Science and Technology">
+                                <option value="BSc Information Technology">BSc Information Technology</option>
+                                <option value="BSc Computer Science">BSc Computer Science</option>
+                                <option value="BSc Mathematics">BSc Mathematics</option>
+                                <option value="BSc Physics">BSc Physics</option>
+                                <option value="BSc Chemistry">BSc Chemistry</option>
+                                <option value="BSc Statistics">BSc Statistics</option>
+                                <option value="BSc Data Science">BSc Data Science</option>
+                                <option value="BSc Artificial Intelligence">BSc Artificial Intelligence</option>
+                                <option value="BSc Cyber Security">BSc Cyber Security</option>
+                                <option value="BSc Biotechnology">BSc Biotechnology</option>
+                                <option value="BSc Microbiology">BSc Microbiology</option>
+                                <option value="BSc Botany">BSc Botany</option>
+                                <option value="BSc Zoology">BSc Zoology</option>
+                                <option value="BSc Environmental Science">BSc Environmental Science</option>
+                            </optgroup>
 
-        <button type="submit">Submit Application</button>
-    </form>
+                            <optgroup label="Computer Applications and Engineering">
+                                <option value="BCA">BCA</option>
+                                <option value="MCA">MCA</option>
+                                <option value="BTech Computer Science">BTech Computer Science</option>
+                                <option value="BTech Information Technology">BTech Information Technology</option>
+                                <option value="BTech Artificial Intelligence">BTech Artificial Intelligence</option>
+                                <option value="BTech Data Science">BTech Data Science</option>
+                                <option value="BTech Electronics">BTech Electronics</option>
+                                <option value="BTech Mechanical Engineering">BTech Mechanical Engineering</option>
+                                <option value="BTech Civil Engineering">BTech Civil Engineering</option>
+                                <option value="BTech Electrical Engineering">BTech Electrical Engineering</option>
+                            </optgroup>
 
-    <a class="back" th:href="@{/}">← Back to Home</a>
+                            <optgroup label="Commerce and Management">
+                                <option value="BCom">BCom</option>
+                                <option value="BCom Accounting and Finance">BCom Accounting and Finance</option>
+                                <option value="BCom Banking and Insurance">BCom Banking and Insurance</option>
+                                <option value="BCom Financial Markets">BCom Financial Markets</option>
+                                <option value="BMS">BMS</option>
+                                <option value="BBA">BBA</option>
+                                <option value="MBA">MBA</option>
+                                <option value="BAF">BAF</option>
+                                <option value="BBI">BBI</option>
+                                <option value="BFM">BFM</option>
+                            </optgroup>
+
+                            <optgroup label="Arts and Humanities">
+                                <option value="BA">BA</option>
+                                <option value="BA English">BA English</option>
+                                <option value="BA Psychology">BA Psychology</option>
+                                <option value="BA Economics">BA Economics</option>
+                                <option value="BA Sociology">BA Sociology</option>
+                                <option value="BA Political Science">BA Political Science</option>
+                                <option value="BA History">BA History</option>
+                                <option value="BA Geography">BA Geography</option>
+                                <option value="BA Philosophy">BA Philosophy</option>
+                            </optgroup>
+
+                            <optgroup label="Other Professional Courses">
+                                <option value="Bachelor of Design">Bachelor of Design</option>
+                                <option value="Bachelor of Journalism">Bachelor of Journalism</option>
+                                <option value="Bachelor of Social Work">Bachelor of Social Work</option>
+                                <option value="Bachelor of Hotel Management">Bachelor of Hotel Management</option>
+                                <option value="Bachelor of Education">Bachelor of Education</option>
+                                <option value="Bachelor of Pharmacy">Bachelor of Pharmacy</option>
+                                <option value="Bachelor of Architecture">Bachelor of Architecture</option>
+                                <option value="Bachelor of Law">Bachelor of Law</option>
+                            </optgroup>
+                        </select>
+                        <p class="field-help">
+                            Choose your preferred course. Final allocation depends on your system's
+                            seat availability and merit rules.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="form-actions">
+                    <button class="submit-button" id="submitButton" type="submit">
+                        Submit Application <span aria-hidden="true">→</span>
+                    </button>
+                    <p class="form-footnote">
+                        <strong>🔒 Secure submission</strong><br>
+                        Your application will proceed to email OTP verification.
+                    </p>
+                </div>
+            </form>
+
+            <a class="back-link" th:href="@{/}">
+                <span aria-hidden="true">←</span> Back to Home
+            </a>
+        </section>
+    </div>
 </main>
 
 <footer>
-    © 2026 University Admission System
+    <strong>University Admission &amp; Automated Seat Allocation System</strong><br>
+    © 2026 University Admission System. All rights reserved.
 </footer>
 
+<script>
+    const admissionForm = document.getElementById("admissionForm");
+    const submitButton = document.getElementById("submitButton");
+
+    admissionForm.addEventListener("submit", function (event) {
+        const marksInput = document.getElementById("marks");
+        const marks = Number(marksInput.value);
+
+        if (!Number.isFinite(marks) || marks < 0 || marks > 100) {
+            event.preventDefault();
+            marksInput.setCustomValidity("Please enter marks between 0 and 100.");
+            marksInput.reportValidity();
+            return;
+        }
+
+        marksInput.setCustomValidity("");
+
+        if (admissionForm.checkValidity()) {
+            submitButton.disabled = true;
+            submitButton.textContent = "Submitting application...";
+        }
+    });
+
+    document.getElementById("marks").addEventListener("input", function () {
+        this.setCustomValidity("");
+    });
+</script>
 </body>
 </html>

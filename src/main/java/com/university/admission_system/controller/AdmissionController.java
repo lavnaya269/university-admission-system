@@ -7,6 +7,7 @@ import com.university.admission_system.service.EmailOtpService;
 import com.university.admission_system.service.SeatAllocationService;
 
 import jakarta.servlet.http.HttpSession;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -26,10 +27,13 @@ public class AdmissionController {
             StudentRepository studentRepository,
             SeatAllocationService seatAllocationService,
             EmailOtpService emailOtpService) {
+
         this.studentRepository = studentRepository;
         this.seatAllocationService = seatAllocationService;
         this.emailOtpService = emailOtpService;
     }
+
+    // ---------------- HOME ----------------
 
     @GetMapping("/")
     public String home() {
@@ -52,8 +56,12 @@ public class AdmissionController {
 
         if (student.getEmail() == null
                 || student.getEmail().isBlank()) {
+
             redirectAttributes.addFlashAttribute(
-                    "errorMessage", "Please enter your email address.");
+                    "errorMessage",
+                    "Please enter your email address."
+            );
+
             return "redirect:/admission";
         }
 
@@ -63,12 +71,23 @@ public class AdmissionController {
         session.setAttribute("pendingAdmission", student);
 
         try {
-            emailOtpService.sendOtp(email, "ADMISSION", session);
+            emailOtpService.sendOtp(
+                    email,
+                    "ADMISSION",
+                    session
+            );
+
             return "redirect:/verify-otp?purpose=ADMISSION";
+
         } catch (IllegalStateException ex) {
+
             session.removeAttribute("pendingAdmission");
+
             redirectAttributes.addFlashAttribute(
-                    "errorMessage", ex.getMessage());
+                    "errorMessage",
+                    ex.getMessage()
+            );
+
             return "redirect:/admission";
         }
     }
@@ -97,7 +116,8 @@ public class AdmissionController {
         }
 
         Object email = session.getAttribute(
-                purpose + "_otp_email");
+                purpose + "_otp_email"
+        );
 
         if (!(email instanceof String)) {
             return "ADMISSION".equals(purpose)
@@ -107,6 +127,7 @@ public class AdmissionController {
 
         model.addAttribute("email", email);
         model.addAttribute("purpose", purpose);
+
         return "verify-otp";
     }
 
@@ -124,7 +145,8 @@ public class AdmissionController {
         }
 
         Object savedEmail = session.getAttribute(
-                purpose + "_otp_email");
+                purpose + "_otp_email"
+        );
 
         if (!(savedEmail instanceof String)) {
             return "ADMISSION".equals(purpose)
@@ -139,35 +161,46 @@ public class AdmissionController {
 
             model.addAttribute("email", email);
             model.addAttribute("purpose", purpose);
+
             model.addAttribute(
                     "errorMessage",
-                    "Invalid or expired OTP. Please request a new code if needed.");
+                    "Invalid or expired OTP. "
+                    + "Please request a new code if needed."
+            );
+
             return "verify-otp";
         }
 
         if ("ADMISSION".equals(purpose)) {
-            Object pending = session.getAttribute("pendingAdmission");
+
+            Object pending =
+                    session.getAttribute("pendingAdmission");
 
             if (!(pending instanceof Student)) {
                 return "redirect:/admission";
             }
 
             Student student = (Student) pending;
+
             student.setAllocationStatus("PENDING");
             student.setAllocatedCourse(null);
 
             studentRepository.save(student);
+
             session.removeAttribute("pendingAdmission");
 
             redirectAttributes.addFlashAttribute(
                     "successMessage",
-                    "Email verified! Your application was submitted successfully.");
+                    "Email verified! Your application "
+                    + "was submitted successfully."
+            );
 
             return "redirect:/";
         }
 
         session.setAttribute("studentLoggedInEmail", email);
         session.removeAttribute("loginOtpEmail");
+
         return "redirect:/student/home";
     }
 
@@ -185,8 +218,12 @@ public class AdmissionController {
             RedirectAttributes redirectAttributes) {
 
         if (email == null || email.isBlank()) {
+
             redirectAttributes.addFlashAttribute(
-                    "errorMessage", "Please enter your email.");
+                    "errorMessage",
+                    "Please enter your email."
+            );
+
             return "redirect:/student/login";
         }
 
@@ -196,32 +233,50 @@ public class AdmissionController {
                 .stream()
                 .anyMatch(student ->
                         student.getEmail() != null
-                                && student.getEmail()
+                        && student.getEmail()
                                 .equalsIgnoreCase(cleanEmail));
 
         if (!registered) {
+
             redirectAttributes.addFlashAttribute(
                     "errorMessage",
-                    "No registered student found with this email.");
+                    "No registered student found with this email."
+            );
+
             return "redirect:/student/login";
         }
 
         session.setAttribute("loginOtpEmail", cleanEmail);
 
         try {
-            emailOtpService.sendOtp(cleanEmail, "LOGIN", session);
+            emailOtpService.sendOtp(
+                    cleanEmail,
+                    "LOGIN",
+                    session
+            );
+
             return "redirect:/verify-otp?purpose=LOGIN";
+
         } catch (IllegalStateException ex) {
+
             session.removeAttribute("loginOtpEmail");
+
             redirectAttributes.addFlashAttribute(
-                    "errorMessage", ex.getMessage());
+                    "errorMessage",
+                    ex.getMessage()
+            );
+
             return "redirect:/student/login";
         }
     }
 
     @GetMapping("/student/home")
-    public String studentHome(HttpSession session, Model model) {
-        Object loginEmail = session.getAttribute("studentLoggedInEmail");
+    public String studentHome(
+            HttpSession session,
+            Model model) {
+
+        Object loginEmail =
+                session.getAttribute("studentLoggedInEmail");
 
         if (!(loginEmail instanceof String)) {
             return "redirect:/student/login";
@@ -241,6 +296,7 @@ public class AdmissionController {
         }
 
         model.addAttribute("student", student);
+
         return "student-home";
     }
 
@@ -250,7 +306,7 @@ public class AdmissionController {
         return "redirect:/student/login";
     }
 
-    // ---------------- ADMIN ----------------
+    // ---------------- ADMIN LOGIN ----------------
 
     @GetMapping("/admin")
     public String adminLogin() {
@@ -266,78 +322,128 @@ public class AdmissionController {
 
         if ("admin".equals(username)
                 && "Admin@123".equals(password)) {
+
             session.setAttribute("adminLoggedIn", true);
+
             return "redirect:/admin/dashboard";
         }
 
         redirectAttributes.addFlashAttribute(
-                "errorMessage", "Invalid username or password.");
+                "errorMessage",
+                "Invalid username or password."
+        );
 
         return "redirect:/admin";
     }
 
+    // ---------------- ADMIN DASHBOARD ----------------
+
     @GetMapping("/admin/dashboard")
-    public String dashboard(HttpSession session, Model model) {
-        if (!Boolean.TRUE.equals(session.getAttribute("adminLoggedIn"))) {
+    public String dashboard(
+            HttpSession session,
+            Model model) {
+
+        if (!Boolean.TRUE.equals(
+                session.getAttribute("adminLoggedIn"))) {
             return "redirect:/admin";
         }
 
-        model.addAttribute("students", studentRepository.findAll());
+        model.addAttribute(
+                "students",
+                studentRepository.findAll()
+        );
+
         return "dashboard";
     }
+
+    // ---------------- ALLOCATE SEATS ----------------
 
     @PostMapping("/admin/allocate")
     public String allocateSeats(
             HttpSession session,
             RedirectAttributes redirectAttributes) {
 
-        if (!Boolean.TRUE.equals(session.getAttribute("adminLoggedIn"))) {
+        if (!Boolean.TRUE.equals(
+                session.getAttribute("adminLoggedIn"))) {
             return "redirect:/admin";
         }
 
         seatAllocationService.allocateSeats();
 
         redirectAttributes.addFlashAttribute(
-                "successMessage", "Seat allocation process completed.");
+                "successMessage",
+                "Seat allocation process completed."
+        );
 
         return "redirect:/admin/dashboard";
     }
+
+    // ---------------- CONFIRM SEAT + SEND EMAIL ----------------
 
     @PostMapping("/admin/confirm-seat")
     public String confirmSeat(
             @RequestParam("studentId") Long studentId,
-            HttpSession session,
-            RedirectAttributes redirectAttributes) {
+            HttpSession session) {
 
-        if (!Boolean.TRUE.equals(session.getAttribute("adminLoggedIn"))) {
+        if (!Boolean.TRUE.equals(
+                session.getAttribute("adminLoggedIn"))) {
             return "redirect:/admin";
         }
 
-        Student student = studentRepository.findById(studentId).orElse(null);
+        Student student = studentRepository
+                .findById(studentId)
+                .orElse(null);
 
         if (student == null) {
-            redirectAttributes.addFlashAttribute(
-                    "errorMessage", "Student not found.");
-            return "redirect:/admin/dashboard";
+            return "redirect:/admin/dashboard?seatError=notfound";
         }
 
         if (!"PENDING".equals(student.getAllocationStatus())) {
-            redirectAttributes.addFlashAttribute(
-                    "errorMessage",
-                    "Only pending students can confirm a seat.");
-            return "redirect:/admin/dashboard";
+            return "redirect:/admin/dashboard?seatError=invalid";
         }
 
+        // Save the confirmed status first.
         student.setAllocationStatus("CONFIRMED");
         studentRepository.save(student);
 
-        redirectAttributes.addFlashAttribute(
-                "successMessage",
-                "Seat confirmed successfully for "
-                        + student.getFullName() + ".");
+        // Send the confirmation email.
+        try {
+            String course = student.getAllocatedCourse();
 
-        return "redirect:/admin/dashboard";
+            if (course == null || course.isBlank()) {
+                course = student.getCourse();
+            }
+
+            if (student.getEmail() == null
+                    || student.getEmail().isBlank()) {
+
+                return "redirect:/admin/dashboard"
+                        + "?seatConfirmed=true&emailFailed=true";
+            }
+
+            emailOtpService.sendSeatConfirmationEmail(
+                    student.getEmail(),
+                    student.getFullName(),
+                    course
+            );
+
+            return "redirect:/admin/dashboard"
+                    + "?seatConfirmed=true&emailSent=true";
+
+        } catch (RuntimeException ex) {
+
+            System.err.println(
+                    "Seat confirmation email could not be sent."
+            );
+
+            ex.printStackTrace();
+
+            return "redirect:/admin/dashboard"
+                    + "?seatConfirmed=true&emailFailed=true";
+        }
     }
+
+    // ---------------- ALLOCATION CHECK ----------------
 
     @GetMapping("/allocation")
     public String allocationPage() {
@@ -352,20 +458,27 @@ public class AdmissionController {
         Student student = studentRepository.findAll()
                 .stream()
                 .filter(s -> s.getEmail() != null
-                        && s.getEmail().equalsIgnoreCase(email.trim()))
+                        && s.getEmail().equalsIgnoreCase(
+                                email.trim()))
                 .findFirst()
                 .orElse(null);
 
         if (student == null) {
+
             model.addAttribute(
                     "errorMessage",
-                    "No application found for this email.");
+                    "No application found for this email."
+            );
+
             return "allocation";
         }
 
         model.addAttribute("student", student);
+
         return "result";
     }
+
+    // ---------------- ADMIN LOGOUT ----------------
 
     @GetMapping("/admin/logout")
     public String logout(HttpSession session) {

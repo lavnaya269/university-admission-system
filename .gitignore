@@ -41,4 +41,14 @@ application-secret.properties
 # Build output
 target/
 src/main/java/com/university/resources/application.properties
-src/main/resources/application.properties
+src/main/resources/application.propertiesuniversity_admission_aiven.sql
+university_admission_backup.sql
+university_admission_import.sql
+
+university_admission_aiven.sql
+
+# Local configuration and database backups
+/src/main/resources/application.properties
+/university_admission_aiven.sql
+/university_admission_backup.sql
+/university_admission_import.sql

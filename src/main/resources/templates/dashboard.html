@@ -1,10 +1,12 @@
 
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admission Admin Dashboard</title>
+
+    <title>Admin Dashboard | University Admission System</title>
 
     <style>
         * {
@@ -19,192 +21,218 @@
             color: #1e293b;
         }
 
-        header {
-            background: linear-gradient(135deg, #312e81, #4f46e5);
+        .navbar {
+            background: linear-gradient(135deg, #172554, #1d4ed8);
             color: white;
-            padding: 25px 5%;
+            padding: 20px 5%;
             display: flex;
             justify-content: space-between;
             align-items: center;
             flex-wrap: wrap;
             gap: 15px;
+            box-shadow: 0 4px 15px rgba(15, 23, 42, 0.15);
         }
 
-        header h1 {
-            font-size: 27px;
+        .brand h1 {
+            font-size: 23px;
+            margin-bottom: 5px;
         }
 
-        header p {
-            margin-top: 6px;
-            color: #e0e7ff;
+        .brand p {
+            font-size: 13px;
+            color: #dbeafe;
         }
 
-        .logout {
-            background: white;
-            color: #4338ca;
+        .logout-btn {
             text-decoration: none;
+            color: white;
+            background: #dc2626;
             padding: 10px 18px;
             border-radius: 8px;
             font-weight: 600;
         }
 
-        main {
-            max-width: 1400px;
+        .logout-btn:hover {
+            background: #b91c1c;
+        }
+
+        .container {
+            max-width: 1250px;
             margin: 30px auto;
-            padding: 0 20px;
+            padding: 0 20px 40px;
+        }
+
+        .welcome {
+            margin-bottom: 25px;
+        }
+
+        .welcome h2 {
+            font-size: 28px;
+            color: #172554;
+            margin-bottom: 8px;
+        }
+
+        .welcome p {
+            color: #64748b;
         }
 
         .message {
-            padding: 14px;
+            display: none;
+            padding: 15px 18px;
+            margin-bottom: 20px;
             border-radius: 9px;
-            margin-bottom: 18px;
+            font-weight: 600;
+            line-height: 1.5;
         }
 
         .success {
             background: #dcfce7;
+            border: 1px solid #86efac;
             color: #166534;
         }
 
         .error {
             background: #fee2e2;
+            border: 1px solid #fca5a5;
             color: #991b1b;
         }
 
-        .cards {
+        .info-cards {
             display: grid;
-            grid-template-columns: repeat(3, minmax(0, 1fr));
-            gap: 20px;
-            margin-bottom: 28px;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 18px;
+            margin-bottom: 30px;
         }
 
         .card {
-            border: none;
             background: white;
-            padding: 24px;
-            border-radius: 15px;
-            text-align: left;
-            box-shadow: 0 5px 20px #1e293b0d;
-            border-top: 4px solid #6366f1;
-            cursor: pointer;
-            transition: 0.2s;
+            padding: 23px;
+            border-radius: 13px;
+            box-shadow: 0 4px 15px rgba(15, 23, 42, 0.06);
+            border: 1px solid #e2e8f0;
         }
 
-        .card:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 9px 25px #1e293b18;
-        }
-
-        .card h3 {
-            font-size: 15px;
+        .card .label {
             color: #64748b;
+            font-size: 14px;
             margin-bottom: 12px;
         }
 
         .card .number {
-            font-size: 34px;
+            font-size: 30px;
             font-weight: 750;
-        }
-
-        .card.active {
-            outline: 2px solid #6366f1;
-            background: #eef2ff;
-        }
-
-        .toolbar {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            gap: 12px;
-            flex-wrap: wrap;
-            margin-bottom: 20px;
-        }
-
-        .toolbar h2 {
-            font-size: 22px;
-        }
-
-        .search {
-            padding: 12px 15px;
-            border: 1px solid #cbd5e1;
-            border-radius: 9px;
-            min-width: 250px;
-            outline-color: #6366f1;
+            color: #1d4ed8;
         }
 
         .actions {
             display: flex;
             flex-wrap: wrap;
-            gap: 10px;
-            margin-bottom: 22px;
+            gap: 12px;
+            margin-bottom: 28px;
         }
 
         .btn {
-            display: inline-block;
-            padding: 10px 14px;
             border: none;
+            padding: 12px 18px;
             border-radius: 8px;
-            background: #4f46e5;
-            color: white;
-            text-decoration: none;
-            font-weight: 600;
+            font-size: 14px;
+            font-weight: 650;
             cursor: pointer;
-            font-size: 13px;
+            text-decoration: none;
+            display: inline-block;
+            text-align: center;
+            transition: 0.2s;
         }
 
         .btn:hover {
-            opacity: 0.88;
+            transform: translateY(-1px);
+            filter: brightness(0.95);
         }
 
-        .secondary {
+        .allocate {
+            background: #2563eb;
+            color: white;
+        }
+
+        .refresh {
             background: #e2e8f0;
             color: #334155;
         }
 
-        .confirm {
-            background: #15803d;
-            white-space: nowrap;
+        .search-box {
+            width: 100%;
+            max-width: 420px;
+            padding: 12px 14px;
+            border: 1px solid #cbd5e1;
+            border-radius: 8px;
+            font-size: 14px;
+            margin-bottom: 20px;
+            outline: none;
         }
 
-        .allocate {
-            background: #7c3aed;
+        .search-box:focus {
+            border-color: #2563eb;
+            box-shadow: 0 0 0 3px #dbeafe;
         }
 
-        .table-container {
+        .table-card {
             background: white;
-            border-radius: 15px;
+            border-radius: 13px;
+            border: 1px solid #e2e8f0;
+            box-shadow: 0 4px 15px rgba(15, 23, 42, 0.05);
+            overflow: hidden;
+        }
+
+        .table-heading {
+            padding: 22px;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .table-heading h3 {
+            color: #172554;
+            margin-bottom: 6px;
+        }
+
+        .table-heading p {
+            color: #64748b;
+            font-size: 13px;
+        }
+
+        .table-wrapper {
+            width: 100%;
             overflow-x: auto;
-            box-shadow: 0 5px 20px #1e293b0d;
         }
 
         table {
             width: 100%;
             border-collapse: collapse;
-            min-width: 1050px;
+            min-width: 950px;
         }
 
         th, td {
-            padding: 15px;
+            padding: 15px 14px;
             text-align: left;
             border-bottom: 1px solid #e2e8f0;
-            font-size: 14px;
+            font-size: 13px;
         }
 
         th {
-            background: #eef2ff;
-            color: #3730a3;
+            background: #eff6ff;
+            color: #1e3a8a;
             font-weight: 700;
+            white-space: nowrap;
         }
 
-        tr:hover td {
-            background: #fafaff;
+        tbody tr:hover {
+            background: #f8fafc;
         }
 
         .status {
             display: inline-block;
             padding: 6px 10px;
             border-radius: 20px;
-            font-size: 12px;
-            font-weight: 700;
+            font-size: 11px;
+            font-weight: 750;
             white-space: nowrap;
         }
 
@@ -228,35 +256,52 @@
             color: #991b1b;
         }
 
+        .confirm-btn {
+            background: #16a34a;
+            color: white;
+            padding: 8px 11px;
+            font-size: 12px;
+        }
+
+        .confirm-btn:disabled {
+            background: #94a3b8;
+            cursor: not-allowed;
+            transform: none;
+        }
+
         .empty {
             text-align: center;
-            padding: 30px;
+            padding: 35px;
             color: #64748b;
         }
 
         footer {
             text-align: center;
             color: #64748b;
-            padding: 25px;
             font-size: 13px;
+            padding: 25px 15px;
         }
 
-        @media (max-width: 750px) {
-            .cards {
-                grid-template-columns: 1fr;
+        @media (max-width: 600px) {
+            .navbar {
+                padding: 17px 20px;
             }
 
-            header h1 {
-                font-size: 22px;
+            .brand h1 {
+                font-size: 19px;
             }
 
-            .search {
-                min-width: 100%;
+            .welcome h2 {
+                font-size: 23px;
+            }
+
+            .container {
+                margin-top: 22px;
+                padding: 0 12px 30px;
+            }
+
+            .actions .btn {
                 width: 100%;
-            }
-
-            .toolbar {
-                align-items: stretch;
             }
         }
     </style>
@@ -264,231 +309,292 @@
 
 <body>
 
-<header>
-    <div>
+<header class="navbar">
+    <div class="brand">
         <h1>University Admission System</h1>
-        <p>Admin Dashboard · Manage applications and seat allocation</p>
+        <p>Admin Control Panel | Seat Allocation Management</p>
     </div>
 
-    <a class="logout" th:href="@{/admin/logout}">Logout</a>
+    <a th:href="@{/admin/logout}" class="logout-btn">Logout</a>
 </header>
 
-<main>
+<main class="container">
 
-    <p th:if="${successMessage}"
-       class="message success"
-       th:text="${successMessage}"></p>
+    <section class="welcome">
+        <h2>Admin Dashboard</h2>
+        <p>Manage student applications, allocate seats and confirm admissions.</p>
+    </section>
 
-    <p th:if="${errorMessage}"
-       class="message error"
-       th:text="${errorMessage}"></p>
+    <!-- Seat confirmation and email notifications -->
+    <div id="seatSuccessMessage"
+         class="message success"
+         role="status"
+         aria-live="polite"></div>
 
-    <section class="cards">
+    <div id="seatErrorMessage"
+         class="message error"
+         role="alert"></div>
 
-        <button type="button" class="card active"
-                data-filter="ALL" onclick="filterStudents('ALL', this)">
-            <h3>Total Applications</h3>
-            <div class="number" th:text="${students.size()}">0</div>
-        </button>
+    <!-- Messages from Spring Boot / Thymeleaf -->
+    <div th:if="${successMessage}"
+         class="message success"
+         style="display:block;"
+         role="status"
+         th:text="${successMessage}">
+    </div>
 
-        <button type="button" class="card"
-                data-filter="ALLOCATED"
-                onclick="filterStudents('ALLOCATED', this)">
-            <h3>Allocated Students</h3>
-            <div class="number"
-                 th:text="${students.?[allocationStatus == 'ALLOCATED'].size()}">0</div>
-        </button>
+    <div th:if="${errorMessage}"
+         class="message error"
+         style="display:block;"
+         role="alert"
+         th:text="${errorMessage}">
+    </div>
 
-        <button type="button" class="card"
-                data-filter="PENDING"
-                onclick="filterStudents('PENDING', this)">
-            <h3>Pending Students</h3>
-            <div class="number"
-                 th:text="${students.?[allocationStatus == 'PENDING'].size()}">0</div>
-        </button>
+    <!-- Dashboard statistics -->
+    <section class="info-cards">
+
+        <div class="card">
+            <p class="label">Total Applications</p>
+            <p class="number"
+               th:text="${#lists.size(students)}">0</p>
+        </div>
+
+        <div class="card">
+            <p class="label">Pending Applications</p>
+            <p class="number"
+               th:text="${#lists.size(students.?[allocationStatus == 'PENDING'])}">0</p>
+        </div>
+
+        <div class="card">
+            <p class="label">Allocated Seats</p>
+            <p class="number"
+               th:text="${#lists.size(students.?[allocationStatus == 'ALLOCATED'])}">0</p>
+        </div>
+
+        <div class="card">
+            <p class="label">Confirmed Seats</p>
+            <p class="number"
+               th:text="${#lists.size(students.?[allocationStatus == 'CONFIRMED'])}">0</p>
+        </div>
 
     </section>
 
-    <div class="actions">
+    <!-- Dashboard actions -->
+    <section class="actions">
 
         <form th:action="@{/admin/allocate}" method="post"
-              onsubmit="return confirm('Allocate seats according to your allocation rules?')">
+              onsubmit="return confirm('Are you sure you want to allocate seats?');">
+
             <button type="submit" class="btn allocate">
                 Allocate Seats
             </button>
         </form>
 
-        <a th:href="@{/admission}" class="btn">Admission Form</a>
-
-        <a th:href="@{/allocation}" class="btn secondary">
-            Check Allocation
+        <a th:href="@{/admin/dashboard}" class="btn refresh">
+            Refresh Dashboard
         </a>
 
-        <a th:href="@{/}" class="btn secondary">Back to Home</a>
+    </section>
 
-    </div>
+    <!-- Student applications -->
+    <section class="table-card">
 
-    <div class="toolbar">
-        <h2 id="tableTitle">All Student Applications</h2>
-
-        <input type="text" id="searchInput" class="search"
-               placeholder="Search name, email, course..."
-               oninput="searchStudents()">
-    </div>
-
-    <div class="table-container">
-        <table id="studentsTable">
-
-            <thead>
-            <tr>
-                <th>ID</th>
-                <th>Student Name</th>
-                <th>Email</th>
-                <th>Phone</th>
-                <th>Applied Course</th>
-                <th>Marks</th>
-                <th>Allocated Course</th>
-                <th>Status</th>
-                <th>Action</th>
-            </tr>
-            </thead>
-
-            <tbody id="studentsBody">
-
-            <tr th:each="student : ${students}"
-                th:attr="data-status=${student.allocationStatus}"
-                class="student-row">
-
-                <td th:text="${student.id}">1</td>
-
-                <td th:text="${student.fullName}">Student Name</td>
-
-                <td th:text="${student.email}">student@email.com</td>
-
-                <td th:text="${student.phone}">0000000000</td>
-
-                <td th:text="${student.course}">Course</td>
-
-                <td th:text="${student.marks}">80</td>
-
-                <td>
-                    <span th:if="${student.allocatedCourse != null}"
-                          th:text="${student.allocatedCourse}"></span>
-
-                    <span th:unless="${student.allocatedCourse != null}">
-                        Not allocated
-                    </span>
-                </td>
-
-                <td>
-                    <span th:if="${student.allocationStatus == 'PENDING'}"
-                          class="status status-pending">Pending</span>
-
-                    <span th:if="${student.allocationStatus == 'ALLOCATED'}"
-                          class="status status-allocated">Allocated</span>
-
-                    <span th:if="${student.allocationStatus == 'CONFIRMED'}"
-                          class="status status-confirmed">Confirmed</span>
-
-                    <span th:if="${student.allocationStatus == 'NOT_ALLOCATED'}"
-                          class="status status-not-allocated">Not Allocated</span>
-                </td>
-
-                <td>
-                    <!-- Confirm Seat button appears for pending students -->
-                    <form th:if="${student.allocationStatus == 'PENDING'}"
-                          th:action="@{/admin/confirm-seat}"
-                          method="post"
-                          onsubmit="return confirm('Are you sure you want to confirm this seat?')">
-
-                        <input type="hidden" name="studentId"
-                               th:value="${student.id}">
-
-                        <button type="submit" class="btn confirm">
-                            Confirm Seat
-                        </button>
-                    </form>
-
-                    <span th:if="${student.allocationStatus == 'CONFIRMED'}"
-                          class="status status-confirmed">
-                        ✓ Confirmed
-                    </span>
-
-                    <span th:if="${student.allocationStatus != 'PENDING'
-                                  and student.allocationStatus != 'CONFIRMED'}">
-                        —
-                    </span>
-                </td>
-
-            </tr>
-
-            </tbody>
-        </table>
-
-        <div id="noResults" class="empty" style="display:none;">
-            No matching students found.
+        <div class="table-heading">
+            <h3>Student Applications</h3>
+            <p>Review student details and confirm pending seats.</p>
         </div>
-    </div>
+
+        <div style="padding: 20px 20px 0;">
+            <input type="search"
+                   id="studentSearch"
+                   class="search-box"
+                   placeholder="Search by name, email, course or status..."
+                   aria-label="Search student applications">
+        </div>
+
+        <div class="table-wrapper">
+
+            <table id="studentsTable">
+
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Student Name</th>
+                        <th>Email</th>
+                        <th>Course Applied</th>
+                        <th>Marks</th>
+                        <th>Allocated Course</th>
+                        <th>Status</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+
+                    <tr th:each="student : ${students}"
+                        class="student-row">
+
+                        <td th:text="${student.id}">1</td>
+
+                        <td class="student-name"
+                            th:text="${student.fullName}">Student Name</td>
+
+                        <td class="student-email"
+                            th:text="${student.email}">student@example.com</td>
+
+                        <td class="student-course"
+                            th:text="${student.course}">Course</td>
+
+                        <td th:text="${student.marks}">80</td>
+
+                        <td th:text="${student.allocatedCourse != null ? student.allocatedCourse : '-'}">
+                            -
+                        </td>
+
+                        <td>
+                            <span class="status"
+                                  th:classappend="${student.allocationStatus == 'PENDING' ? ' status-pending' :
+                                      (student.allocationStatus == 'ALLOCATED' ? ' status-allocated' :
+                                      (student.allocationStatus == 'CONFIRMED' ? ' status-confirmed' :
+                                      ' status-not-allocated'))}"
+                                  th:text="${student.allocationStatus != null ? student.allocationStatus : 'NOT ALLOCATED'}">
+                                PENDING
+                            </span>
+                        </td>
+
+                        <td>
+                            <form th:if="${student.allocationStatus == 'PENDING'}"
+                                  th:action="@{/admin/confirm-seat}"
+                                  method="post"
+                                  onsubmit="return confirm('Are you sure you want to confirm this seat? A confirmation email will be attempted.');">
+
+                                <input type="hidden"
+                                       name="studentId"
+                                       th:value="${student.id}">
+
+                                <button type="submit"
+                                        class="btn confirm-btn">
+                                    Confirm Seat
+                                </button>
+                            </form>
+
+                            <span th:if="${student.allocationStatus == 'CONFIRMED'}"
+                                  class="status status-confirmed">
+                                Confirmed
+                            </span>
+
+                            <span th:if="${student.allocationStatus != 'PENDING'
+                                           and student.allocationStatus != 'CONFIRMED'}">
+                                —
+                            </span>
+                        </td>
+
+                    </tr>
+
+                    <tr th:if="${#lists.isEmpty(students)}">
+                        <td colspan="8" class="empty">
+                            No student applications found.
+                        </td>
+                    </tr>
+
+                </tbody>
+            </table>
+
+            <p id="noSearchResults"
+               class="empty"
+               style="display:none;">
+                No students match your search.
+            </p>
+
+        </div>
+    </section>
 
 </main>
 
 <footer>
-    University Admission & Automated Seat Allocation System
+    University Admission System &copy; 2026
 </footer>
 
 <script>
-    let currentFilter = "ALL";
+    // ---------------- SEAT CONFIRMATION MESSAGES ----------------
 
-    function filterStudents(filter, clickedCard) {
-        currentFilter = filter;
+    (function () {
+        const params = new URLSearchParams(window.location.search);
 
-        document.querySelectorAll(".card").forEach(card => {
-            card.classList.remove("active");
-        });
+        const successBox =
+            document.getElementById("seatSuccessMessage");
 
-        if (clickedCard) {
-            clickedCard.classList.add("active");
+        const errorBox =
+            document.getElementById("seatErrorMessage");
+
+        if (params.get("seatConfirmed") === "true") {
+
+            if (params.get("emailSent") === "true") {
+                successBox.textContent =
+                    "Seat confirmed successfully! "
+                    + "Confirmation email was accepted by the mail server.";
+
+            } else if (params.get("emailFailed") === "true") {
+                successBox.textContent =
+                    "Seat confirmed successfully, but the confirmation "
+                    + "email could not be sent. Check the application terminal.";
+
+            } else {
+                successBox.textContent =
+                    "Seat confirmed successfully!";
+            }
+
+            successBox.style.display = "block";
         }
 
-        const titles = {
-            ALL: "All Student Applications",
-            ALLOCATED: "Allocated Students",
-            PENDING: "Pending Students"
-        };
+        const error = params.get("seatError");
 
-        document.getElementById("tableTitle").textContent =
-            titles[filter] || "Student Applications";
+        if (error === "notfound") {
+            errorBox.textContent = "Student not found.";
+            errorBox.style.display = "block";
 
-        searchStudents();
-    }
+        } else if (error === "invalid") {
+            errorBox.textContent =
+                "Only pending students can confirm a seat.";
+            errorBox.style.display = "block";
+        }
 
-    function searchStudents() {
-        const searchText =
-            document.getElementById("searchInput").value.toLowerCase();
+        // Remove notification parameters from the URL after reading them.
+        if (params.has("seatConfirmed") || params.has("seatError")) {
+            window.history.replaceState(
+                {},
+                document.title,
+                window.location.pathname
+            );
+        }
+    })();
 
-        const rows = document.querySelectorAll(".student-row");
+    // ---------------- STUDENT SEARCH ----------------
+
+    const searchInput = document.getElementById("studentSearch");
+    const studentRows = document.querySelectorAll(".student-row");
+    const noSearchResults = document.getElementById("noSearchResults");
+
+    searchInput.addEventListener("input", function () {
+        const query = this.value.toLowerCase().trim();
         let visibleCount = 0;
 
-        rows.forEach(row => {
-            const status = row.getAttribute("data-status");
-            const rowText = row.innerText.toLowerCase();
+        studentRows.forEach(function (row) {
+            const text = row.innerText.toLowerCase();
+            const matches = text.includes(query);
 
-            const matchesFilter =
-                currentFilter === "ALL" || status === currentFilter;
+            row.style.display = matches ? "" : "none";
 
-            const matchesSearch = rowText.includes(searchText);
-            const show = matchesFilter && matchesSearch;
-
-            row.style.display = show ? "" : "none";
-
-            if (show) {
+            if (matches) {
                 visibleCount++;
             }
         });
 
-        document.getElementById("noResults").style.display =
-            visibleCount === 0 ? "block" : "none";
-    }
+        noSearchResults.style.display =
+            studentRows.length > 0 && visibleCount === 0
+                ? "block"
+                : "none";
+    });
 </script>
 
 </body>
